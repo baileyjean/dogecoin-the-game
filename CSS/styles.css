@@ -17,9 +17,20 @@ body {
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.cell {
+.playable {
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid blue;
+}
+
+.center {
+
+  /*  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 1px solid plum;
+  */
 }

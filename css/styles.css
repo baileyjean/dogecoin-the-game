@@ -41,7 +41,6 @@ nav {
   display: grid;
   height: 70vh;
   width: 70vw;
-  border: 2px solid black;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
 }

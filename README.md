@@ -7,28 +7,6 @@
 #### [LinkedIn](https://www.linkedin.com/in/baileyleavitt) | [GitHub](https://www.github.com/baileyjean) | [Trello](https://trello.com/b/7AK9tUIU/vanilla-js-game)
 
 ***
-
-## HTML Decisions
-#### 
-***
-
-## CSS Decisions
-#### 
-*** 
-
-## Javascript Decisions
-#### 
-*** 
-
-### Teachable Moments From Project
-***
-
-### Screenshots
-![Screenshot of some Tweets to be used in the game](css/images/elonTweets.png)
-
-![Screenshot of the first gameboard mock-up](css/images/gameBoardMockUp.png)
-***
-
 ### Requirements
 - [] Minimum of two web pages - with navigation between them
 - [] Single Player Mode: 3 profit goals to choose from at the beginning ($50k, $100k, $1mil)
@@ -48,10 +26,16 @@
 - [] Dice animations
 - [] Card animations
 
+***
+### Screenshots
+![Screenshot of some Tweets to be used in the game](css/images/elonTweets.png)
+
+![Screenshot of the first gameboard mock-up](css/images/gameBoardMockUp.png)
+***
+
 ### Future Improvements
--
+
 
 ### Credits
-#### RESEARCH ON BOARD DESIGN: [StackOverflow Monopoly Board Design](https://stackoverflow.com/questions/62297465/how-to-make-a-monopoly-board-using-css-grid)
-#### TWEETS: [Elon Musk's Twitter](https://twitter.com/elonmusk)
-#### DOGE (RIP): [The Original Doge Blog](https://kabosu112.exblog.jp/9944144/)
+- TWEETS: [Elon Musk's Twitter](https://twitter.com/elonmusk)
+- DOGE (RIP): [The Original Doge Blog](https://kabosu112.exblog.jp/9944144/)

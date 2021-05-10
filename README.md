@@ -1,5 +1,5 @@
 # Dogecoin the Game (Project 1 - HTML, CSS, JS)
-![Screenshot of the game logo](./images/logo01.png)
+![Screenshot of the game logo](./css/images/logo01.png)
 ### Date: 10 May 2021
 
 ## By: Bailey Leavitt
@@ -24,9 +24,9 @@
 ***
 
 ### Screenshots
-![Screenshot of some Tweets to be used in the game](./images/elonTweets.png)
+![Screenshot of some Tweets to be used in the game](./css/images/elonTweets.png)
 
-![Screenshot of the first gameboard mock-up](./images/gameBoardMockUp.png)
+![Screenshot of the first gameboard mock-up](./css/images/gameBoardMockUp.png)
 ***
 
 ### Requirements

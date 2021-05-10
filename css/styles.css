@@ -15,6 +15,13 @@ h1, h2, h3 {
   border: 1px solid red;
 }
 
+section {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-evenly;
+}
+/*
 .profit-goal, .investment {
   display: flex;
   flex-direction: row;
@@ -24,6 +31,7 @@ h1, h2, h3 {
   border: 1px solid blue;
 }
 
+
 form {
   display: flex;
   flex-direction: row;
@@ -31,11 +39,12 @@ form {
   padding: 10px;
   border: 1px solid black;
 }
+*/
 
 .game-board {
   display: grid;
-  height: 70vh;
-  width: 70vw;
+  height: 50vh;
+  width: 50vw;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
 }

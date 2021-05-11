@@ -20,7 +20,7 @@ const possibleChoices = [{                                             // All po
 },{
   type: `robinhood`,
   displayName: `Robinhood`,
-  cardAction: return damnRobinhood()
+  cardAction: () => damnRobinhood()
 },{
   type: `tweet`,
   displayName: `Tweet`

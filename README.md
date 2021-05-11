@@ -12,7 +12,7 @@
 - [x] Single Player Mode: 3 profit goals to choose from at the beginning ($50k, $100k, $1mil)
 - [] Bank Account/Investment Counter/Progress bar
 - [x] Player Object with at least three keys (bank account/doge account/cards)
-- [] Randomized card deck
+- [x] Randomized card deck
 - [] Randomized dice roll
 - [] Game Loss Logic (3 Robinhood cards = LOSE / Profit goal not met / Bank Account is 0 for x amount of turns)
 - [] Game Win Logic (Reach profit goal)
@@ -39,3 +39,4 @@
 ### Credits
 - TWEETS: [Elon Musk's Twitter](https://twitter.com/elonmusk)
 - DOGE (RIP): [The Original Doge Blog](https://kabosu112.exblog.jp/9944144/)
+- STACKOVERFLOW: [Fisher-Yates Shuffle algorithm](https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array)

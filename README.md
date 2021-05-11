@@ -14,7 +14,7 @@
 - [x] Player Object with at least three keys (bank account/doge account/cards)
 - [] Randomized card deck
 - [] Randomized dice roll
-- [] Game Loss Logic (3 Robinhood cards = LOSE / Profit goal not met)
+- [] Game Loss Logic (3 Robinhood cards = LOSE / Profit goal not met / Bank Account is 0 for x amount of turns)
 - [] Game Win Logic (Reach profit goal)
 
 ### Bonuses

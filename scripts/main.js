@@ -13,9 +13,6 @@ const goalDisplay = document.getElementById(`goalSetTo`);              // used i
 const investmentDisplay = document.getElementById(`playerInvests`);    // used in initializeInvestment() to display desired investment
 const drawCard = document.querySelector(`.drawsCard`);                 // used in event handler for card deck and calls Player.pullsCard() method 
 
-// FOR TESTING - WILL DELETE LATER
-let randomCard = `Robinhood Card`;                       // force-pushing this in pullsCard() for testing only!!
-
 // CLASSES / OBJECTS
 // the Player class creates a new player when the .playNow button is clicked
 class Player {
@@ -39,7 +36,9 @@ const Deck = [...new Array(30)].map(function(_){
     name: `card`
   }
 })
-Deck.splice(0,0,randomCard)
+
+//Deck.splice(index, numberOfItemsToRemove (probably 0), newItem)
+//Deck.splice(0,0,randomCard)
 console.log(Deck)
 
 // FUNCTIONS
@@ -91,6 +90,6 @@ playNow.addEventListener(`click`, createPlayer);
 
 // Event Handler for newPlayer.pullsCard()
 drawCard.addEventListener(`click`, function () {
-  newPlayer.pullsCard(Deck[0]);
+  newPlayer.pullsCard();
   console.log(newPlayer);
 })

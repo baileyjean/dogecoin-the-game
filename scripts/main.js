@@ -2,20 +2,21 @@
 let profitGoal = 0
 let playerInvests = 0
 let bankBalance = 12000-playerInvests
-console.log(profitGoal)
-console.log(playerInvests)
-console.log(bankBalance)
+console.log(`profitGoal: ` + profitGoal)
+console.log(`playerInvests: ` + playerInvests)
+console.log(`bankBalance: ` + bankBalance)
 
-const setGoal = document.querySelector(`.profit-goals`)
-const setInvestment = document.querySelector(`.initial-invest`)
+const setGoal = document.querySelectorAll(`.profit-goals`)
+const setInvestment = document.querySelectorAll(`.initial-invest`)
 const playNow = document.querySelector(`.playNow`)
 const dogeStartingPrice = 0.42
 const dogesHeld = playerInvests/dogeStartingPrice
-console.log(setGoal)
-console.log(setInvestment)
-console.log(playNow)
-console.log(dogeStartingPrice)
-console.log(dogesHeld)
+const goalDisplay = document.getElementById(`goalSetTo`)
+console.log(`setGoal: ` + setGoal)
+console.log(`setInvestment: ` + setInvestment)
+console.log(`playNow: ` + playNow)
+console.log(`dogeStartingPrice: ` + dogeStartingPrice)
+console.log(`dogesHeld: ` + dogesHeld)
 
 // CLASSES / OBJECTS
 
@@ -25,7 +26,7 @@ class Player {
   constructor(goal, investment){
     this.myGoal = goal;
     this.myInvestment = investment;
-    this.numOfDoges = dogesHeld;
+    this.numOfGoodBois = dogesHeld;
     this.currentBalance = bankBalance;
     this.cardsPlayed = [];
   }
@@ -48,33 +49,29 @@ class Card {
 // FUNCTIONS
 function setProfitGoal(event) {
   event.preventDefault()
-  console.log(`Hello`)
-  console.log(`A profit goal was clicked`)
-  console.log(`Printing the value of setGoal: ${setGoal.value}`)
-  /*
-  profitGoal = parseInt(setGoal.value)
-  document.getElementById(`goalSetTo`).innerHTML = `Your profit goal is set to: $${profitGoal}. TO THE MOON!`
-*/
+  profitGoal = parseInt(event.target.value)
+  goalDisplay.innerHTML = `Your profit goal is set to: $${profitGoal}. TO THE MOON!`
 }
 
 function initializeInvestment(event) {
-  console.log(`An initial investment was selected`)
-  console.log(`The value of setInvestment is: ${setInvestment}`)
-  /*
-  playerInvests = parseInt(setInvestment.value)
+  event.preventDefault()
+  playerInvests = parseInt(event.target.value)
   document.getElementById(`playerInvests`).innerHTML = `wow big spender! much monies invested: $${playerInvests}`
-*/
 }
 
-function createPlayer(event) {
-  console.log(`Play button was clicked`)
-  /*
+function createPlayer() {
   const newPlayer = new Player(profitGoal, playerInvests)
-  console.log(`A new player has been created with info: ${newPlayer}`)
-  */
+  console.log(`A new player has been created with info: ${newPlayer.keys}`)
 }
 
 // EVENT LISTENERS
-setGoal.addEventListener(`click`, (event) => setProfitGoal(event))
-setInvestment.addEventListener(`click`, initializeInvestment)
+
+setGoal.forEach(function(button) {
+  button.addEventListener(`click`, (event) => setProfitGoal(event))
+})
+
+setInvestment.forEach(function(button) {
+  button.addEventListener(`click`, (event) => initializeInvestment(event))
+})
+
 playNow.addEventListener(`click`, createPlayer)

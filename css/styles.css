@@ -17,29 +17,19 @@ h1, h2, h3 {
 
 section {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+#playerSelections {
+  display: flex;
   flex-direction: row;
   align-items: baseline;
   justify-content: space-evenly;
-}
-/*
-.profit-goal, .investment {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 7px;
-  border: 1px solid blue;
-}
-
-
-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 10px;
   border: 1px solid black;
 }
-*/
 
 .game-board {
   display: grid;
@@ -62,3 +52,23 @@ form {
   align-items: center;
   justify-content: space-evenly;
 }
+
+/*
+.profit-goal, .investment {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 7px;
+  border: 1px solid blue;
+}
+
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid black;
+}
+*/

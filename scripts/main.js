@@ -13,16 +13,14 @@ const playNow = document.querySelector(`.playNow`);                    // used i
 const goalDisplay = document.getElementById(`goalSetTo`);              // used in setProfitGoal() to display desired goal
 const investmentDisplay = document.getElementById(`playerInvests`);    // used in initializeInvestment() to display desired investment
 const drawCard = document.querySelector(`.drawsCard`);                 // used in event handler for card deck and calls Player.pullsCard() method 
-
-const possibleChoices = [{ // All possible cards that can be selected
+const possibleChoices = [{                                             // All possible card types used in the game
   type: `memeLord`,
   displayName:'Meme Lord'
-  // cardAction: function(){
-  // TODO
-  // }
+  //cardAction: function(){}
 },{
   type: `robinhood`,
-  displayName: `Robinhood`
+  displayName: `Robinhood`,
+  cardAction: return damnRobinhood()
 },{
   type: `tweet`,
   displayName: `Tweet`
@@ -47,56 +45,12 @@ class Player {
     this.currentBalance = bankBalance,
     this.cardsPlayed = [];
   }
-
+  
   // the pullsCard method pushes a card from the Deck object when the player clicks the drawCard event handler
   pullsCard(event){
     this.cardsPlayed.push(event);
   }
 }
-
-// the Deck class creates an empty array of the specified size
-function findCard(cardType){
-  return possibleChoices.find(choice => choice.type === cardType)
-}
-let dogeDeck = [...Array(12)].map(_ => findCard('dogeMiner'))
-let decisionDeck = [...Array(12)].map(_ => findCard('decisionCard'))
-let lifeDeck = [...Array(25)].map(_ => findCard('lifeEvent'))
-let tweetDeck = [...Array(30)].map(_ => findCard('tweet'))
-let robinhoodDeck = [...Array(3)].map(_ => findCard('robinhood'))
-let memeDeck = [...Array(2)].map(_ => findCard('memeLord'))
-const Deck = [...dogeDeck, ...decisionDeck, ...lifeDeck, ...tweetDeck, ...robinhoodDeck, ...memeDeck];
-console.log(Deck)
-
-function shuffle(array) {
-  // From Stackoverflow
-  // Fisher-Yates Shuffle algoritm
-  // https://github.com/Daplie/knuth-shuffle
-  let currentIndex = array.length;
-  let temporaryValue
-  let randomIndex
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
-// Used like so
-shuffle(Deck);
-shuffle(Deck);
-shuffle(Deck);
-console.log(Deck);
-
-// console.log(numLives);
 
 // FUNCTIONS
 // setProfitGoal() - player must choose between three profit goals to begin game and must reach their goal to win the game
@@ -124,6 +78,45 @@ function createPlayer() {
   newPlayer = new Player(profitGoal, playerInvests);
   console.log(`A new player has been created with info: ${newPlayer.myGoal}, ${newPlayer.myInvestment}, ${newPlayer.numOfGoodBois}, ${newPlayer.currentBalance}, ${newPlayer.cardsPlayed}`);
 }
+// findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
+// Lines 82 - 93 should be read as a group
+function findCard(cardType){
+  return possibleChoices.find(choice => choice.type === cardType);
+}
+// make six decks, each housing a specfic card type
+let dogeMinerDeck = [...Array(12)].map(_ => findCard('dogeMiner'));
+let decisionDeck = [...Array(12)].map(_ => findCard('decisionCard'));
+let lifeDeck = [...Array(25)].map(_ => findCard('lifeEvent'));
+let tweetDeck = [...Array(30)].map(_ => findCard('tweet'));
+let robinhoodDeck = [...Array(3)].map(_ => findCard('robinhood'));
+let memeLordDeck = [...Array(2)].map(_ => findCard('memeLord'));
+// Create a MASTER DECK for game play, containing all the deck arrays just created
+const Deck = [...dogeMinerDeck, ...decisionDeck, ...lifeDeck, ...tweetDeck, ...robinhoodDeck, ...memeLordDeck];
+
+// shuffle(array) - Uses the Fisher-Yates Shuffle algorithm, as taken from Stackoverflow; comments from creator preserved in function below
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+// https://github.com/Daplie/knuth-shuffle
+function shuffle(array) {
+  let currentIndex = array.length;
+  let temporaryValue;
+  let randomIndex;
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+}
+
+// Shuffling the deck three times
+shuffle(Deck);
+shuffle(Deck);
+shuffle(Deck);
 
 // damnRobinhood() - subtracts 1 from numLives for each Robinhood card held by the player
 function damnRobinhood() {

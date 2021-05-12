@@ -9,11 +9,13 @@
 ***
 ### Requirements
 - [x] Minimum of two web pages - with navigation between them
-- [x] Single Player Mode: 3 profit goals to choose from at the beginning ($50k, $100k, $1mil)
+- [x] Single Player Mode
+- [x] Player Object
+- [x] Six unique card deck arrays
+- [x] Master deck for the game board
+- [x] Shuffled card deck
+- [x] Randomized dice roll
 - [] Bank Account/Investment Counter/Progress bar
-- [x] Player Object with at least three keys (bank account/doge account/cards)
-- [x] Randomized card deck
-- [] Randomized dice roll
 - [] Game Loss Logic (3 Robinhood cards = LOSE / Profit goal not met / Bank Account is 0 for x amount of turns)
 - [] Game Win Logic (Reach profit goal)
 

@@ -6,16 +6,19 @@ let playerInvests = 0;           // set by event handler after player clicks the
 let newPlayer = null;            // set by event handler after player clicks Start
 let dogeCurrentPrice = 0;        // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
 let numLives = 3;                // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
-const dogeStartingPrice = 0.42;                                        // initialzed to $0.42 for any game
-const setGoal = document.querySelectorAll(`.profit-goals`);            // used in event handler to call the function setProfitGoal()
-const setInvestment = document.querySelectorAll(`.initial-invest`);    // used in event handler to call initializeInvestment()
-const playNow = document.querySelector(`.playNow`);                    // used in event handler to call createPlayer()
-const goalDisplay = document.getElementById(`goalSetTo`);              // used in setProfitGoal() to display desired goal
-const investmentDisplay = document.getElementById(`playerInvests`);    // used in initializeInvestment() to display desired investment
-const drawCard = document.querySelector(`.drawsCard`);                 // used in event handler for card deck and calls Player.pullsCard() method 
-const diceOnBoard = document.querySelector(`.rollMe`)                  // used in event handler for rolling the dice; determines how many places the player moves on the board
-const diceSet = [1,2,3,4];                                             // used in Player.rollDice method
-const possibleChoices = [{                                             // All possible card types used in the game
+let gameActive = false;          // initialized to false until createPlayer() is called
+const dogeStartingPrice = 0.42;                                                                  // initialzed to $0.42 for any game
+const startAndFinish = document.getElementById(`start-end`);                                     // used in event handler to call createPlayer() and in hyperloop decision card
+const setGoal = document.querySelectorAll(`.profit-goals`);                                      // used in event handler to call the function setProfitGoal()
+const setInvestment = document.querySelectorAll(`.initial-invest`);                              // used in event handler to call initializeInvestment()
+const playNow = document.querySelector(`.playNow`);                                              // used in event handler to call createPlayer()
+const goalDisplay = document.getElementById(`goalSetTo`);                                        // used in setProfitGoal() to display desired goal
+const investmentDisplay = document.getElementById(`playerInvests`);                              // used in initializeInvestment() to display desired investment
+const drawCard = document.querySelector(`.drawsCard`);                                           // used in event handler for card deck and calls Player.pullsCard() method 
+const diceOnBoard = document.querySelector(`.rollMe`)                                            // used in event handler for rolling the dice; determines how many places the player moves on the board
+const diceSet = [1,2,3,4];                                                                       // used in Player.rollDice method
+const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`          // used to draw player on the board
+const possibleChoices = [{                                                                       // All possible card types used in the game
   type: `memeLord`,
   displayName:'Meme Lord'
   //cardAction: function(){}
@@ -82,7 +85,9 @@ function initializeInvestment(event) {
 // createPlayer() - called by the playNow event handler
 // TODO: error handling if player tries to start game without making profit/investment selections
 function createPlayer() {
+  gameActive = true;
   newPlayer = new Player(profitGoal, playerInvests);
+  startAndFinish.innerHTML = `${playerOne}`
   console.log(`A new player has been created with info: ${newPlayer.myGoal}, ${newPlayer.myInvestment}, ${newPlayer.numOfGoodBois}, ${newPlayer.currentBalance}, ${newPlayer.cardsPlayed}`);
 }
 
@@ -137,9 +142,6 @@ function damnRobinhood() {
 }
 
 // TODO: 
-
-// rollDice()
-    // need an array for dice; use Math.random to roll
 // drawPlayer()
     // need to attach to createPlayer
 // bumpPrice()
@@ -175,6 +177,7 @@ drawCard.addEventListener(`click`, function () {
   console.log(newPlayer);
 })
 
+// Event Handler for moving the player around the board - calls the roll() method of the Player object
 diceOnBoard.addEventListener(`click`, function () {
   let move = newPlayer.roll();
   console.log(`Dice roll: ${move}`)

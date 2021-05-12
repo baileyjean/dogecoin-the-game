@@ -39,6 +39,7 @@ let newPlayer = null;                         // set by event handler after play
 let dogeCurrentPrice = dogeStartingPrice;     // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
 let numLives = 3;                             // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
 let gameActive = false;                       // initialized to false until createPlayer() is called
+let boardPositions = [];                      // set by fillBoard() function
 
 // *********** CLASSES ***********
 // the Player class creates a new player when the .playNow button is clicked
@@ -63,6 +64,18 @@ class Player {
 }
 
 // *********** FUNCTIONS ***********
+// fillBoard() - grabs all the playable elements of the game board and puts them in the boardPositions array
+// sorts the array so the player can move around the board in the correct order
+function fillBoard() {
+  let boardSpace = document.querySelectorAll(`.playable`);
+  for(let i = 0; i < boardSpace.length; i++) {
+    boardPositions.push(boardSpace[i].id);
+  }
+  boardPositions.sort();
+  console.log(boardPositions)
+}
+fillBoard();
+
 // setProfitGoal() - player must choose between three profit goals to begin game and must reach their goal to win the game
 // called by the setGoal event handler and sets the goal to the value of the element clicked
 // sets goalDisplay to the player's selection
@@ -188,6 +201,7 @@ drawCard.addEventListener(`click`, function () {
 // Event Handler for moving the player around the board - calls the roll() method of the Player object
 diceOnBoard.addEventListener(`click`, function () {
   let move = newPlayer.roll();
+
   console.log(`Dice roll: ${move}`)
   //document.getElementById(`pos7`).innerHTML = `${playerOne}`
 })

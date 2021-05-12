@@ -1,31 +1,23 @@
-// VARIABLES
-let bankBalance = 12000;         // initialized to $12,000 for any player; used in game play
-let dogesHeld = 0;               // set in intializeInvestment: dogesHeld = playerInvests/dogeStartingPrice; math for the win logic needs this
-let profitGoal = 0;              // set by event handler after player clicks their desired profit goal
-let playerInvests = 0;           // set by event handler after player clicks their desired investment
-let newPlayer = null;            // set by event handler after player clicks Start
-let dogeCurrentPrice = 0;        // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
-let numLives = 3;                // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
-let gameActive = false;          // initialized to false until createPlayer() is called
-const dogeStartingPrice = 0.42;                                                                  // initialzed to $0.42 for any game
-const startAndFinish = document.getElementById(`start-end`);                                     // used in event handler to call createPlayer() and in hyperloop decision card
-const setGoal = document.querySelectorAll(`.profit-goals`);                                      // used in event handler to call the function setProfitGoal()
-const setInvestment = document.querySelectorAll(`.initial-invest`);                              // used in event handler to call initializeInvestment()
-const playNow = document.querySelector(`.playNow`);                                              // used in event handler to call createPlayer()
-const goalDisplay = document.getElementById(`goalSetTo`);                                        // used in setProfitGoal() to display desired goal
-const investmentDisplay = document.getElementById(`playerInvests`);                              // used in initializeInvestment() to display desired investment
-const drawCard = document.querySelector(`.drawsCard`);                                           // used in event handler for card deck and calls Player.pullsCard() method 
-const diceOnBoard = document.querySelector(`.rollMe`)                                            // used in event handler for rolling the dice; determines how many places the player moves on the board
-const diceSet = [1,2,3,4];                                                                       // used in Player.rollDice method
-const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`          // used to draw player on the board
-const possibleChoices = [{                                                                       // All possible card types used in the game
+// *********** VARIABLES ***********
+// Game Concept, Game Rules, and Code Created and Written by Bailey Leavitt (May 2021) - General Assembly Student at the time of creation (Go Team Taco!!)
+const dogeStartingPrice = 0.42;                                                               // initialzed to $0.42 for any game
+const startAndFinish = document.getElementById(`start-end`);                                  // used in event handler to call createPlayer() and in hyperloop decision card
+const setGoal = document.querySelectorAll(`.profit-goals`);                                   // used in event handler to call the function setProfitGoal()
+const setInvestment = document.querySelectorAll(`.initial-invest`);                           // used in event handler to call initializeInvestment()
+const playNow = document.querySelector(`.playNow`);                                           // used in event handler to call createPlayer()
+const goalDisplay = document.getElementById(`goalSetTo`);                                     // used in setProfitGoal() to display desired goal
+const investmentDisplay = document.getElementById(`playerInvests`);                           // used in initializeInvestment() to display desired investment
+const drawCard = document.querySelector(`.drawsCard`);                                        // used in event handler for card deck and calls Player.pullsCard() method 
+const diceOnBoard = document.querySelector(`.rollMe`)                                         // used in event handler for rolling the dice; determines how many places the player moves on the board
+const diceSet = [1,2,3,4];                                                                    // used in Player.rollDice method
+const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`       // used to draw player on the board
+const possibleChoices = [{                                                                    // All possible card types used in the game
   type: `memeLord`,
   displayName:'Meme Lord'
-  //cardAction: function(){}
+  
 },{
   type: `robinhood`,
-  displayName: `Robinhood`,
-  cardAction: damnRobinhood()
+  displayName: `Robinhood`
 },{
   type: `tweet`,
   displayName: `Tweet`
@@ -39,8 +31,16 @@ const possibleChoices = [{                                                      
   type: `decisionCard`,
   displayName: `Decision Card`
 }]
+let bankBalance = 12000;                      // initialized to $12,000 for any player; used in game play
+let dogesHeld = 0;                            // set in intializeInvestment: dogesHeld = playerInvests/dogeStartingPrice; math for the win logic needs this
+let profitGoal = 0;                           // set by event handler after player clicks their desired profit goal
+let playerInvests = 0;                        // set by event handler after player clicks their desired investment
+let newPlayer = null;                         // set by event handler after player clicks Start
+let dogeCurrentPrice = dogeStartingPrice;     // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
+let numLives = 3;                             // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
+let gameActive = false;                       // initialized to false until createPlayer() is called
 
-// CLASSES / OBJECTS
+// *********** CLASSES ***********
 // the Player class creates a new player when the .playNow button is clicked
 class Player {
   constructor(goal, investment){
@@ -56,13 +56,13 @@ class Player {
     this.cardsPlayed.push(event);
   }
 
+  // the roll method is called when the diceOnBoard event listener is called, and it determines how far around the board the player moves
   roll(){
     return Math.floor(Math.random() * diceSet.length) + 1;
   }
 }
 
-
-// FUNCTIONS
+// *********** FUNCTIONS ***********
 // setProfitGoal() - player must choose between three profit goals to begin game and must reach their goal to win the game
 // called by the setGoal event handler and sets the goal to the value of the element clicked
 // sets goalDisplay to the player's selection
@@ -90,7 +90,6 @@ function createPlayer() {
   startAndFinish.innerHTML = `${playerOne}`
   console.log(`A new player has been created with info: ${newPlayer.myGoal}, ${newPlayer.myInvestment}, ${newPlayer.numOfGoodBois}, ${newPlayer.currentBalance}, ${newPlayer.cardsPlayed}`);
 }
-
 
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
 // Lines 82 - 93 should be read as a group
@@ -135,17 +134,28 @@ shuffle(Deck);
 // damnRobinhood() - subtracts 1 from numLives for each Robinhood card held by the player
 function damnRobinhood() {
   //if(numLives >= 1){  
-    return numLives = numLives - 1;
+    numLives = numLives - 1;
+    return numLives;
   //} else(numLives === 0){
   //  playerLoses()
   //}
 }
 
+// bumpPrice() - tied to memeLord cards; gets player halfway to their profit goal the first pull, then all the way there on the second
+function bumpPrice() {
+  if(dogeCurrentPrice < profitGoal/2){
+    dogeCurrentPrice = profitGoal/2;
+    return dogeCurrentPrice;
+  } else if(dogeCurrentPrice >= profitGoal/2){
+    dogeCurrentPrice = profitGoal;
+    return `All Hail the Meme Lord - Hope You Make It To The Finish Before Robinhood Catches On`//chickenDinner;
+  } else{
+    return `It appears you have surpassed your profitGoal... All Hail the Meme Lord!` 
+  }
+}
+
 // TODO: 
-// drawPlayer()
-    // need to attach to createPlayer
-// bumpPrice()
-    // dogeCurrentPrice * profitGoal/2
+// movePlayer()
 // elonTweets()
     // dogeCurrentPrice goes up OR down by some dollar amount
 // lifeEvent()
@@ -155,8 +165,7 @@ function damnRobinhood() {
 // makeDecision()
     // 1. pull another card; 2. discard a Robinhood card from your deck; 3. HYPERLOOP to the finish
 
-
-// EVENT LISTENERS
+// *********** EVENT LISTENERS ***********
 // Event Handler for setProfitGoal()
 setGoal.forEach(function(button) {
   button.addEventListener(`click`, setProfitGoal);
@@ -174,11 +183,11 @@ playNow.addEventListener(`click`, createPlayer);
 drawCard.addEventListener(`click`, function () {
   let cardIndex = Deck.shift();
   newPlayer.pullsCard(cardIndex);
-  console.log(newPlayer);
 })
 
 // Event Handler for moving the player around the board - calls the roll() method of the Player object
 diceOnBoard.addEventListener(`click`, function () {
   let move = newPlayer.roll();
   console.log(`Dice roll: ${move}`)
+  document.getElementById(`pos7`).innerHTML = `${playerOne}`
 })

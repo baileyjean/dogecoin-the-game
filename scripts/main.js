@@ -67,17 +67,14 @@ class Player {
 // *********** FUNCTIONS ***********
 // fillBoard() - grabs all the playable elements of the game board and puts them in the boardPositions array
 // sorts the array so the player can move around the board in the correct order
+// id.slice grabs the id text from the HTML element and uses that to sort the array
 function fillBoard() {
   for(let i = 0; i < boardSpace.length; i++) {
     boardPositions.push(boardSpace[i]);
   }
   boardPositions.sort((a,b) =>a.id.slice(0,2) - b.id.slice(0,2));
-  console.log(boardPositions)
 }
 fillBoard();
-
-//boardPositions.indexOf
-//must check if your roll is greater than the possible next steps, if yes, reset to 00
 
 // setProfitGoal() - player must choose between three profit goals to begin game and must reach their goal to win the game
 // called by the setGoal event handler and sets the goal to the value of the element clicked
@@ -103,14 +100,11 @@ function initializeInvestment(event) {
 function createPlayer() {
   gameActive = true;
   newPlayer = new Player(profitGoal, playerInvests);
-  newPlayer.location.innerHTML = `${playerOne}`
-  console.log(`indexOf current position: ${boardPositions.indexOf(newPlayer.location)+1}`);
-  console.log(`New Player's location: ${newPlayer.location}`);
-  console.log(`A new player has been created with info: ${newPlayer.myGoal}, ${newPlayer.myInvestment}, ${newPlayer.numOfGoodBois}, ${newPlayer.currentBalance}, ${newPlayer.cardsPlayed}`);
+  newPlayer.location.innerHTML = `${playerOne}`;
 }
 
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
-// Lines 82 - 93 should be read as a group
+// code block between "function findCard" and "const Deck" should be read as a group
 function findCard(cardType){
   return possibleChoices.find(choice => choice.type === cardType);
 }
@@ -150,6 +144,7 @@ shuffle(Deck);
 shuffle(Deck);
 
 // damnRobinhood() - subtracts 1 from numLives for each Robinhood card held by the player
+/*
 function damnRobinhood() {
   //if(numLives >= 1){  
     numLives = numLives - 1;
@@ -159,6 +154,11 @@ function damnRobinhood() {
   //}
 }
 
+function elonTweets() {
+  return `Ermergerddd Elon sent a twitter`;
+}
+*/
+
 // bumpPrice() - tied to memeLord cards; gets player halfway to their profit goal the first pull, then all the way there on the second
 function bumpPrice() {
   if(dogeCurrentPrice < profitGoal/2){
@@ -166,22 +166,11 @@ function bumpPrice() {
     return dogeCurrentPrice;
   } else if(dogeCurrentPrice >= profitGoal/2){
     dogeCurrentPrice = profitGoal;
-    return `All Hail the Meme Lord - Hope You Make It To The Finish Before Robinhood Catches On`//chickenDinner;
+    return `All Hail the Meme Lord - Hope You Make It To The Finish Before Robinhood Catches On`;
   } else{
-    return `It appears you have surpassed your profitGoal... All Hail the Meme Lord!` 
+    return `It appears you have surpassed your profitGoal... All Hail the Meme Lord!`;
   }
 }
-
-// TODO: 
-// movePlayer()
-// elonTweets()
-    // dogeCurrentPrice goes up OR down by some dollar amount
-// lifeEvent()
-    // choose to subtract from bankAccount || numOfGoodBois
-// dogeMiner
-    // numOfGoodBois goes up by some amount
-// makeDecision()
-    // 1. pull another card; 2. discard a Robinhood card from your deck; 3. HYPERLOOP to the finish
 
 // *********** EVENT LISTENERS ***********
 // Event Handler for setProfitGoal()
@@ -200,28 +189,86 @@ playNow.addEventListener(`click`, createPlayer);
 // Event Handler for newPlayer.pullsCard()
 drawCard.addEventListener(`click`, function () {
   let cardIndex = Deck.shift();
+  // switch(cardIndex.type) {
+  //   case `memeLord`: {
+  //     console.log(`Player pulled ${cardIndex.displayName}`);
+  //     break;
+  //   }
+  //   case `robinhood`: {
+  //     console.log(`Player pulled ${cardIndex.displayName}`);
+  //     numLives = numLives - 1;
+  //     return numLives;
+  //     //break;
+  //   }
+  //   case `tweet`: {
+  //     console.log(`Player pulled ${cardIndex.displayName}`);
+  //     return `Ermergerddd Elon sent a twitter`;
+  //     //break;
+  //   }
+  //   case `lifeEvent`: {
+  //     console.log(`Player pulled ${cardIndex.displayName}`);
+  //     break;
+  //   }
+  //   case `dogeMiner`: {
+  //     console.log(`Player pulled ${cardIndex.displayName}`);
+  //     break;
+  //   }
+  //   case `decisionCard`: {
+  //     console.log(`Player pulled ${cardIndex.displayName}`);
+  //     break;
+  //   } 
+  // }
   newPlayer.pullsCard(cardIndex);
-})
+  console.log(cardIndex);
+  console.log(newPlayer.cardsPlayed);
+  console.log(Deck);
+  console.log(numLives);
 
-// Event Handler for moving the player around the board - calls the roll() method of the Player object
+})
+/*
+  type: `memeLord`,
+  displayName:'Meme Lord'
+},{
+  type: `robinhood`,
+  displayName: `Robinhood`
+},{
+  type: `tweet`,
+  displayName: `Tweet`
+  // elonTweets()
+    // dogeCurrentPrice goes up OR down by some dollar amount
+},{
+  type: `lifeEvent`,
+  displayName: `Life Event`
+  // lifeEvent()
+    // choose to subtract from bankAccount || numOfGoodBois
+},{
+  type: `dogeMiner`,
+  displayName: `Doge Miner`
+  // dogeMiner
+    // numOfGoodBois goes up by some amount
+},{
+  type: `decisionCard`,
+  displayName: `Decision Card`
+  // makeDecision()
+    // 1. pull another card; 2. discard a Robinhood card from your deck; 3. HYPERLOOP to the finish
+*/
+
+// Event Handler for moving the player around the board - calls the roll() method of the Player object and sets player.location
 diceOnBoard.addEventListener(`click`, function () {
   let move = newPlayer.roll();
-  console.log(newPlayer.location)
-  // Take dice roll, target boardpositions by roll number, update player location to target element
-  let currentIndex = boardPositions.indexOf(newPlayer.location)
+  // Take dice roll, target boardPositions by roll number, update player location to target element
+  let currentIndex = boardPositions.indexOf(newPlayer.location);
   let targetElement = boardPositions[move + currentIndex];
-  newPlayer.location.innerHTML = ''
-  let remainingPos = boardPositions.length - currentIndex
-  if(remainingPos < move){
-    // Check if player at end position
-    // Stop game
-    let resetLocation= boardPositions[0]
-    newPlayer.location = resetLocation
-    resetLocation.innerHTML = playerOne
-    return 
+  // Reset player's location
+  newPlayer.location.innerHTML = ``;
+  let remainingPos = boardPositions.length - currentIndex;
+  // Check if player is at end position and place player on start-end if yes
+  if(remainingPos <= move){
+    let resetLocation= boardPositions[0];
+    newPlayer.location = resetLocation;
+    resetLocation.innerHTML = playerOne;
+    return;
   }
   newPlayer.location = targetElement;
-  targetElement.innerHTML = playerOne
-  // console.log(targetElement)
-  console.log(`Dice roll: ${move}`);
+  targetElement.innerHTML = playerOne;
 })

@@ -20,7 +20,7 @@ const possibleChoices = [{                                             // All po
 },{
   type: `robinhood`,
   displayName: `Robinhood`,
-  cardAction: () => damnRobinhood()
+  cardAction: damnRobinhood()
 },{
   type: `tweet`,
   displayName: `Tweet`
@@ -114,9 +114,11 @@ function shuffle(array) {
 }
 
 // Shuffling the deck three times
+console.log(Deck);
 shuffle(Deck);
 shuffle(Deck);
 shuffle(Deck);
+console.log(Deck);
 
 // damnRobinhood() - subtracts 1 from numLives for each Robinhood card held by the player
 function damnRobinhood() {
@@ -127,14 +129,10 @@ function damnRobinhood() {
   //}
 }
 
-// placeholderFunc() - used for testing the Deck class
-function placeholderFunc() {
-  return `I'm INSIDE the Deck!`;
-}
+
 
 // TODO: 
 
-// shuffleDeck()
 // rollDice()
     // need an array for dice; use Math.random to roll
 // drawPlayer()
@@ -167,6 +165,7 @@ playNow.addEventListener(`click`, createPlayer);
 
 // Event Handler for newPlayer.pullsCard()
 drawCard.addEventListener(`click`, function () {
-  newPlayer.pullsCard();
+  let cardIndex = Deck.shift();
+  newPlayer.pullsCard(cardIndex);
   console.log(newPlayer);
 })

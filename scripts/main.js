@@ -1,7 +1,7 @@
 // *********** VARIABLES ***********
 // Game Concept, Game Rules, and Code Created and Written by Bailey Leavitt (May 2021) - General Assembly Student at the time of creation (Go Team Taco!!)
 const dogeStartingPrice = 0.42;                                                               // initialzed to $0.42 for any game
-const startAndFinish = document.getElementById(`start-end`);                                  // used in event handler to call createPlayer() and in hyperloop decision card
+const startAndFinish = document.getElementById(`00start-end`);                                // used in event handler to call createPlayer() and in hyperloop decision card
 const setGoal = document.querySelectorAll(`.profit-goals`);                                   // used in event handler to call the function setProfitGoal()
 const setInvestment = document.querySelectorAll(`.initial-invest`);                           // used in event handler to call initializeInvestment()
 const playNow = document.querySelector(`.playNow`);                                           // used in event handler to call createPlayer()
@@ -14,7 +14,6 @@ const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50
 const possibleChoices = [{                                                                    // All possible card types used in the game
   type: `memeLord`,
   displayName:'Meme Lord'
-  
 },{
   type: `robinhood`,
   displayName: `Robinhood`
@@ -31,15 +30,16 @@ const possibleChoices = [{                                                      
   type: `decisionCard`,
   displayName: `Decision Card`
 }]
-let bankBalance = 12000;                      // initialized to $12,000 for any player; used in game play
-let dogesHeld = 0;                            // set in intializeInvestment: dogesHeld = playerInvests/dogeStartingPrice; math for the win logic needs this
-let profitGoal = 0;                           // set by event handler after player clicks their desired profit goal
-let playerInvests = 0;                        // set by event handler after player clicks their desired investment
-let newPlayer = null;                         // set by event handler after player clicks Start
-let dogeCurrentPrice = dogeStartingPrice;     // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
-let numLives = 3;                             // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
-let gameActive = false;                       // initialized to false until createPlayer() is called
-let boardPositions = [];                      // set by fillBoard() function
+let bankBalance = 12000;                                    // initialized to $12,000 for any player; used in game play
+let dogesHeld = 0;                                          // set in intializeInvestment: dogesHeld = playerInvests/dogeStartingPrice; math for the win logic needs this
+let profitGoal = 0;                                         // set by event handler after player clicks their desired profit goal
+let playerInvests = 0;                                      // set by event handler after player clicks their desired investment
+let newPlayer = null;                                       // set by event handler after player clicks Start
+let dogeCurrentPrice = dogeStartingPrice;                   // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
+let numLives = 3;                                           // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
+let gameActive = false;                                     // initialized to false until createPlayer() is called
+let boardPositions = [];                                    // set by fillBoard() function
+let boardSpace = document.querySelectorAll(`.playable`);    // used in fillBoard()
 
 // *********** CLASSES ***********
 // the Player class creates a new player when the .playNow button is clicked
@@ -49,7 +49,8 @@ class Player {
     this.myInvestment = investment,
     this.numOfGoodBois = dogesHeld,
     this.currentBalance = bankBalance,
-    this.cardsPlayed = [];
+    this.cardsPlayed = [],
+    this.location = startAndFinish;
   }
   
   // the pullsCard method pushes a card from the Deck object when the player clicks the drawCard event handler
@@ -67,14 +68,16 @@ class Player {
 // fillBoard() - grabs all the playable elements of the game board and puts them in the boardPositions array
 // sorts the array so the player can move around the board in the correct order
 function fillBoard() {
-  let boardSpace = document.querySelectorAll(`.playable`);
   for(let i = 0; i < boardSpace.length; i++) {
-    boardPositions.push(boardSpace[i].id);
+    boardPositions.push(boardSpace[i]);
   }
-  boardPositions.sort();
+  boardPositions.sort((a,b) =>a.id.slice(0,2) - b.id.slice(0,2));
   console.log(boardPositions)
 }
 fillBoard();
+
+//boardPositions.indexOf
+//must check if your roll is greater than the possible next steps, if yes, reset to 00
 
 // setProfitGoal() - player must choose between three profit goals to begin game and must reach their goal to win the game
 // called by the setGoal event handler and sets the goal to the value of the element clicked
@@ -100,7 +103,9 @@ function initializeInvestment(event) {
 function createPlayer() {
   gameActive = true;
   newPlayer = new Player(profitGoal, playerInvests);
-  startAndFinish.innerHTML = `${playerOne}`
+  newPlayer.location.innerHTML = `${playerOne}`
+  console.log(`indexOf current position: ${boardPositions.indexOf(newPlayer.location)+1}`);
+  console.log(`New Player's location: ${newPlayer.location}`);
   console.log(`A new player has been created with info: ${newPlayer.myGoal}, ${newPlayer.myInvestment}, ${newPlayer.numOfGoodBois}, ${newPlayer.currentBalance}, ${newPlayer.cardsPlayed}`);
 }
 
@@ -201,7 +206,22 @@ drawCard.addEventListener(`click`, function () {
 // Event Handler for moving the player around the board - calls the roll() method of the Player object
 diceOnBoard.addEventListener(`click`, function () {
   let move = newPlayer.roll();
-
-  console.log(`Dice roll: ${move}`)
-  //document.getElementById(`pos7`).innerHTML = `${playerOne}`
+  console.log(newPlayer.location)
+  // Take dice roll, target boardpositions by roll number, update player location to target element
+  let currentIndex = boardPositions.indexOf(newPlayer.location)
+  let targetElement = boardPositions[move + currentIndex];
+  newPlayer.location.innerHTML = ''
+  let remainingPos = boardPositions.length - currentIndex
+  if(remainingPos < move){
+    // Check if player at end position
+    // Stop game
+    let resetLocation= boardPositions[0]
+    newPlayer.location = resetLocation
+    resetLocation.innerHTML = playerOne
+    return 
+  }
+  newPlayer.location = targetElement;
+  targetElement.innerHTML = playerOne
+  // console.log(targetElement)
+  console.log(`Dice roll: ${move}`);
 })

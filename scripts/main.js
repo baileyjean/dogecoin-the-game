@@ -13,6 +13,8 @@ const playNow = document.querySelector(`.playNow`);                    // used i
 const goalDisplay = document.getElementById(`goalSetTo`);              // used in setProfitGoal() to display desired goal
 const investmentDisplay = document.getElementById(`playerInvests`);    // used in initializeInvestment() to display desired investment
 const drawCard = document.querySelector(`.drawsCard`);                 // used in event handler for card deck and calls Player.pullsCard() method 
+const diceOnBoard = document.querySelector(`.rollMe`)                  // used in event handler for rolling the dice; determines how many places the player moves on the board
+const diceSet = [1,2,3,4];                                             // used in Player.rollDice method
 const possibleChoices = [{                                             // All possible card types used in the game
   type: `memeLord`,
   displayName:'Meme Lord'
@@ -50,7 +52,12 @@ class Player {
   pullsCard(event){
     this.cardsPlayed.push(event);
   }
+
+  roll(){
+    return Math.floor(Math.random() * diceSet.length) + 1;
+  }
 }
+
 
 // FUNCTIONS
 // setProfitGoal() - player must choose between three profit goals to begin game and must reach their goal to win the game
@@ -78,6 +85,8 @@ function createPlayer() {
   newPlayer = new Player(profitGoal, playerInvests);
   console.log(`A new player has been created with info: ${newPlayer.myGoal}, ${newPlayer.myInvestment}, ${newPlayer.numOfGoodBois}, ${newPlayer.currentBalance}, ${newPlayer.cardsPlayed}`);
 }
+
+
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
 // Lines 82 - 93 should be read as a group
 function findCard(cardType){
@@ -114,11 +123,9 @@ function shuffle(array) {
 }
 
 // Shuffling the deck three times
-console.log(Deck);
 shuffle(Deck);
 shuffle(Deck);
 shuffle(Deck);
-console.log(Deck);
 
 // damnRobinhood() - subtracts 1 from numLives for each Robinhood card held by the player
 function damnRobinhood() {
@@ -128,8 +135,6 @@ function damnRobinhood() {
   //  playerLoses()
   //}
 }
-
-
 
 // TODO: 
 
@@ -168,4 +173,9 @@ drawCard.addEventListener(`click`, function () {
   let cardIndex = Deck.shift();
   newPlayer.pullsCard(cardIndex);
   console.log(newPlayer);
+})
+
+diceOnBoard.addEventListener(`click`, function () {
+  let move = newPlayer.roll();
+  console.log(`Dice roll: ${move}`)
 })

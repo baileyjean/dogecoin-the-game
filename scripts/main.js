@@ -13,22 +13,53 @@ const diceSet = [1,2,3,4];                                                      
 const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`       // used to draw player on the board
 const possibleChoices = [{                                                                    // All possible card types used in the game
   type: `memeLord`,
-  displayName:'Meme Lord'
+  displayName:'Meme Lord',
+  bumpPrice: function() {
+    if(dogeCurrentPrice < profitGoal/2) {
+      dogeCurrentPrice = profitGoal/2;
+    } else {
+      dogeCurrentPrice = profitGoal;
+      console.log(`All Hail the Meme Lord - Hope You Make It To The Finish Before Robinhood Catches On`);
+    } 
+  }
 },{
   type: `robinhood`,
-  displayName: `Robinhood`
+  displayName: `Robinhood`,
+  damnRobinhood: function() {
+    if(numLives >= 1){  
+      numLives = numLives - 1;
+      console.log(`you have ${numLives} left`);
+    } else if(numLives === 0){
+      console.log(`you lose`);
+    }
+  }
 },{
-  type: `tweet`,
-  displayName: `Tweet`
+  type: `goodTweet`,
+  displayName: `Good Tweet`,
+  yayTweets: function() {
+    dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 50));
+    console.log(`omg Elon Tweeted and your doge went up and now it's $${dogeCurrentPrice}!`)
+  }
 },{
   type: `lifeEvent`,
-  displayName: `Life Event`
+  displayName: `Life Event`,
+  lifeEvent: function() {
+    console.log(`life happens... ope`)
+  }
 },{
   type: `dogeMiner`,
   displayName: `Doge Miner`
 },{
-  type: `decisionCard`,
-  displayName: `Decision Card`
+  type: `badTweet`,
+  displayName: `Bad Tweet`,
+  sadTweets: function() {
+    if(Math.floor(Math.random() * 10) < dogeCurrentPrice){
+      dogeCurrentPrice = dogeCurrentPrice - (Math.floor(Math.random() * 10));
+    console.log(`nooooooo this tweet made your doge drop to $${dogeCurrentPrice}!`)
+    } else {
+      dogeCurrentPrice = dogeCurrentPrice/2;
+    }
+  }
 }]
 let bankBalance = 12000;                                    // initialized to $12,000 for any player; used in game play
 let dogesHeld = 0;                                          // set in intializeInvestment: dogesHeld = playerInvests/dogeStartingPrice; math for the win logic needs this
@@ -110,13 +141,13 @@ function findCard(cardType){
 }
 // make six decks, each housing a specfic card type
 let dogeMinerDeck = [...Array(12)].map(_ => findCard('dogeMiner'));
-let decisionDeck = [...Array(12)].map(_ => findCard('decisionCard'));
+let badTweetDeck = [...Array(21)].map(_ => findCard('badTweet'));
 let lifeDeck = [...Array(25)].map(_ => findCard('lifeEvent'));
-let tweetDeck = [...Array(30)].map(_ => findCard('tweet'));
+let goodTweetDeck = [...Array(21)].map(_ => findCard('goodTweet'));
 let robinhoodDeck = [...Array(3)].map(_ => findCard('robinhood'));
 let memeLordDeck = [...Array(2)].map(_ => findCard('memeLord'));
 // Create a MASTER DECK for game play, containing all the deck arrays just created
-const Deck = [...dogeMinerDeck, ...decisionDeck, ...lifeDeck, ...tweetDeck, ...robinhoodDeck, ...memeLordDeck];
+const Deck = [...dogeMinerDeck, ...badTweetDeck, ...lifeDeck, ...goodTweetDeck, ...robinhoodDeck, ...memeLordDeck];
 
 // shuffle(array) - Uses the Fisher-Yates Shuffle algorithm, as taken from Stackoverflow; comments from creator preserved in function below
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -143,34 +174,8 @@ shuffle(Deck);
 shuffle(Deck);
 shuffle(Deck);
 
-// damnRobinhood() - subtracts 1 from numLives for each Robinhood card held by the player
-/*
-function damnRobinhood() {
-  //if(numLives >= 1){  
-    numLives = numLives - 1;
-    return numLives;
-  //} else(numLives === 0){
-  //  playerLoses()
-  //}
-}
-
-function elonTweets() {
-  return `Ermergerddd Elon sent a twitter`;
-}
-*/
-
 // bumpPrice() - tied to memeLord cards; gets player halfway to their profit goal the first pull, then all the way there on the second
-function bumpPrice() {
-  if(dogeCurrentPrice < profitGoal/2){
-    dogeCurrentPrice = profitGoal/2;
-    return dogeCurrentPrice;
-  } else if(dogeCurrentPrice >= profitGoal/2){
-    dogeCurrentPrice = profitGoal;
-    return `All Hail the Meme Lord - Hope You Make It To The Finish Before Robinhood Catches On`;
-  } else{
-    return `It appears you have surpassed your profitGoal... All Hail the Meme Lord!`;
-  }
-}
+
 
 // *********** EVENT LISTENERS ***********
 // Event Handler for setProfitGoal()
@@ -189,69 +194,20 @@ playNow.addEventListener(`click`, createPlayer);
 // Event Handler for newPlayer.pullsCard()
 drawCard.addEventListener(`click`, function () {
   let cardIndex = Deck.shift();
-  // switch(cardIndex.type) {
-  //   case `memeLord`: {
-  //     console.log(`Player pulled ${cardIndex.displayName}`);
-  //     break;
-  //   }
-  //   case `robinhood`: {
-  //     console.log(`Player pulled ${cardIndex.displayName}`);
-  //     numLives = numLives - 1;
-  //     return numLives;
-  //     //break;
-  //   }
-  //   case `tweet`: {
-  //     console.log(`Player pulled ${cardIndex.displayName}`);
-  //     return `Ermergerddd Elon sent a twitter`;
-  //     //break;
-  //   }
-  //   case `lifeEvent`: {
-  //     console.log(`Player pulled ${cardIndex.displayName}`);
-  //     break;
-  //   }
-  //   case `dogeMiner`: {
-  //     console.log(`Player pulled ${cardIndex.displayName}`);
-  //     break;
-  //   }
-  //   case `decisionCard`: {
-  //     console.log(`Player pulled ${cardIndex.displayName}`);
-  //     break;
-  //   } 
-  // }
   newPlayer.pullsCard(cardIndex);
+  if(cardIndex.type === `lifeEvent`){
+    return cardIndex.lifeEvent();
+  } else if(cardIndex.type === `goodTweet`){
+    return cardIndex.yayTweets();
+  } else if(cardIndex.type === `badTweet`){
+    return cardIndex.sadTweets();
+  } else
   console.log(cardIndex);
   console.log(newPlayer.cardsPlayed);
   console.log(Deck);
   console.log(numLives);
 
 })
-/*
-  type: `memeLord`,
-  displayName:'Meme Lord'
-},{
-  type: `robinhood`,
-  displayName: `Robinhood`
-},{
-  type: `tweet`,
-  displayName: `Tweet`
-  // elonTweets()
-    // dogeCurrentPrice goes up OR down by some dollar amount
-},{
-  type: `lifeEvent`,
-  displayName: `Life Event`
-  // lifeEvent()
-    // choose to subtract from bankAccount || numOfGoodBois
-},{
-  type: `dogeMiner`,
-  displayName: `Doge Miner`
-  // dogeMiner
-    // numOfGoodBois goes up by some amount
-},{
-  type: `decisionCard`,
-  displayName: `Decision Card`
-  // makeDecision()
-    // 1. pull another card; 2. discard a Robinhood card from your deck; 3. HYPERLOOP to the finish
-*/
 
 // Event Handler for moving the player around the board - calls the roll() method of the Player object and sets player.location
 diceOnBoard.addEventListener(`click`, function () {

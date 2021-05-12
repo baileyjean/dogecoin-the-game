@@ -189,5 +189,5 @@ drawCard.addEventListener(`click`, function () {
 diceOnBoard.addEventListener(`click`, function () {
   let move = newPlayer.roll();
   console.log(`Dice roll: ${move}`)
-  document.getElementById(`pos7`).innerHTML = `${playerOne}`
+  //document.getElementById(`pos7`).innerHTML = `${playerOne}`
 })

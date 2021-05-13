@@ -98,8 +98,8 @@ class Player {
 
 // *********** FUNCTIONS ***********
 // fillBoard() - grabs all the playable elements of the game board and puts them in the boardPositions array
-// sorts the array so the player can move around the board in the correct order
-// id.slice grabs the id text from the HTML element and uses that to sort the array
+// --- sorts the array so the player can move around the board in the correct order
+// --- id.slice grabs the id text from the HTML element and uses that to sort the array
 function fillBoard() {
   for(let i = 0; i < boardSpace.length; i++) {
     boardPositions.push(boardSpace[i]);
@@ -109,17 +109,17 @@ function fillBoard() {
 fillBoard();
 
 // setProfitGoal() - player must choose between three profit goals to begin game and must reach their goal to win the game
-// called by the setGoal event handler and sets the goal to the value of the element clicked
-// sets goalDisplay to the player's selection
+// --- called by the setGoal event handler and sets the goal to the value of the element clicked
+// --- sets goalDisplay to the player's selection
 function setProfitGoal(event) {
   profitGoal = parseInt(event.target.value);
   goalDisplay.innerHTML = `Your profit goal is set to: $${profitGoal}. TO THE MOON!`;
 }
 
 // initializeInvestment() - player must choose between three investment choices to begin game
-// called by the setInvestment event handler and sets the investment to the value of the element clicked
-// sets the investmentDisplay to the player's selection
-// handles the math for player's bank balance and dogecoins held
+// --- called by the setInvestment event handler and sets the investment to the value of the element clicked
+// --- sets the investmentDisplay to the player's selection
+// --- handles the math for player's bank balance and dogecoins held
 function initializeInvestment(event) {
   playerInvests = parseInt(event.target.value);
   investmentDisplay.innerHTML = `wow big spender! much monies invested: $${playerInvests}`;
@@ -136,23 +136,23 @@ function createPlayer() {
 }
 
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
-// code block between "function findCard" and "const Deck" should be read as a group
+// --- code block between "function findCard" and "const Deck" should be read as a group
 function findCard(cardType){
   return possibleChoices.find(choice => choice.type === cardType);
 }
-// make six decks, each housing a specfic card type
+// --- make six decks, each housing a specfic card type
 let dogeMinerDeck = [...Array(12)].map(_ => findCard('dogeMiner'));
 let badTweetDeck = [...Array(21)].map(_ => findCard('badTweet'));
 let lifeDeck = [...Array(25)].map(_ => findCard('lifeEvent'));
 let goodTweetDeck = [...Array(21)].map(_ => findCard('goodTweet'));
 let robinhoodDeck = [...Array(3)].map(_ => findCard('robinhood'));
 let memeLordDeck = [...Array(2)].map(_ => findCard('memeLord'));
-// Create a MASTER DECK for game play, containing all the deck arrays just created
+// --- Create a MASTER DECK for game play, containing all the deck arrays just created
 const Deck = [...dogeMinerDeck, ...badTweetDeck, ...lifeDeck, ...goodTweetDeck, ...robinhoodDeck, ...memeLordDeck];
 
 // shuffle(array) - Uses the Fisher-Yates Shuffle algorithm, as taken from Stackoverflow; comments from creator preserved in function below
-// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-// https://github.com/Daplie/knuth-shuffle
+// --- https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+// --- https://github.com/Daplie/knuth-shuffle
 function shuffle(array) {
   let currentIndex = array.length;
   let temporaryValue;

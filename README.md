@@ -33,6 +33,7 @@
 - [] Player piece animations
 - [] Dice animations
 - [] Card animations
+- [] Human vs AI
 
 ***
 ### Screenshots

@@ -11,15 +11,31 @@ const drawCard = document.querySelector(`.drawsCard`);                          
 const diceOnBoard = document.querySelector(`.rollMe`)                                         // used in event handler for rolling the dice; determines how many places the player moves on the board
 const diceSet = [1,2,3,4];                                                                    // used in Player.rollDice method
 const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`       // used to draw player on the board
+let bankBalance = 12000;                                    // initialized to $12,000 for any player; used in game play
+let playerInvests = 0;                                      // set by event handler after player clicks their desired investment
+let profitGoal = 0;                                         // set by event handler after player clicks their desired profit goal
+let dogesHeld = 0;                                          // set in createPlayer; math for the win logic needs this
+let newPlayer = null;                                       // set by event handler after player clicks Start
+let dogeCurrentPrice = dogeStartingPrice;                   // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
+let numLives = 3;                                           // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
+let gameActive = false;                                     // initialized to false until createPlayer() is called
+let earningTotal = 0;                                       // initialized to 0; used to calculate how much player's investment is worth
+let boardPositions = [];                                    // set by fillBoard() function
+let boardSpace = document.querySelectorAll(`.playable`);    // used in fillBoard()
 // All possible card types used in the game
 const possibleChoices = [{                                                                    
   type: `memeLord`,
   displayName:'Meme Lord',
   goalBoost: function() {
+    console.log(`MEME LORD!`)
     if(dogeCurrentPrice < profitGoal/2) {
+      console.log(`Doge price was ${dogeCurrentPrice}`)
       dogeCurrentPrice = profitGoal/2;
+      console.log(`Now it's ${dogeCurrentPrice}`)
     } else {
+      console.log(`Doge price was ${dogeCurrentPrice}`)
       dogeCurrentPrice = profitGoal;
+      console.log(`Now it's ${dogeCurrentPrice}`)
       console.log(`All Hail the Meme Lord - Hope You Make It To The Finish Before Robinhood Catches On`);
     } 
   }
@@ -27,51 +43,58 @@ const possibleChoices = [{
   type: `robinhood`,
   displayName: `Robinhood`,
   damnRobinhood: function() {
+    console.log(`ROBINHOOD - You had ${numLives} Lives...`);
     if(numLives >= 1){  
       numLives = numLives - 1;
-      console.log(`you have ${numLives} left`);
+      console.log(`Now you have ${numLives} left`);
     } else if(numLives === 0){
-      console.log(`you lose`);
+      console.log(`No more lives... you lose`);
     }
   }
 },{
   type: `goodTweet`,
   displayName: `Good Tweet`,
   yayTweets: function() {
-    dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 50));
-    console.log(`omg Elon Tweeted and your doge went up and now it's $${dogeCurrentPrice}!`)
+
+    console.log(`GOOD TWEET - dogeCurrentPrice was ${dogeCurrentPrice}`)
+    dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 20) + 1);
+    earningTotal = dogeCurrentPrice * dogesHeld;
+    console.log(`omg now it's $${dogeCurrentPrice}!`);
+    console.log(`Your investment is worth ${earningTotal}`);
   }
 },{
   type: `lifeEvent`,
   displayName: `Life Event`,
   lifeEvent: function() {
-    console.log(`life happens... ope`)
+    console.log(`life happens... ope`);
+    console.log(`You have ${dogesHeld} dogecoins`)
+    console.log(`Each dogecoin is worth: ${dogeCurrentPrice}`);
+    console.log(`Your investment is worth ${earningTotal}`);
   }
 },{
   type: `dogeMiner`,
-  displayName: `Doge Miner`
+  displayName: `Doge Miner`,
+  mineDoges: function() {
+    console.log(`DOGEMINER - You once held: ${dogesHeld} dogecoins...`);
+    
+    // add before and after calculation to see if you successfully mined any
+    dogesHeld += dogesHeld * (Math.floor(Math.random() * 5) + 1);
+    earningTotal = dogeCurrentPrice * dogesHeld;
+    console.log(`Now you hold ${dogesHeld} dogecoins!!!!`);
+    console.log(`Your investment is now worth ${earningTotal}`);
+  }
 },{
   type: `badTweet`,
   displayName: `Bad Tweet`,
   sadTweets: function() {
-    if(Math.floor(Math.random() * 10) < dogeCurrentPrice){
-      dogeCurrentPrice = dogeCurrentPrice - (Math.floor(Math.random() * 10));
-    console.log(`nooooooo this tweet made your doge drop to $${dogeCurrentPrice}!`)
-    } else {
-      dogeCurrentPrice = dogeCurrentPrice/2;
-    }
+    console.log(`Player's Investment BEFORE: ${earningTotal}`);
+    console.log(`BAD TWEET - dogeCurrentPrice was: $${dogeCurrentPrice}`);
+    dogeCurrentPrice = dogeCurrentPrice * 0.2;
+    earningTotal = dogeCurrentPrice * dogesHeld;
+    console.log(`Player's Investment AFTER: ${earningTotal}`)
+    console.log(`Now it's $${dogeCurrentPrice}`);
   }
 }]
-let bankBalance = 12000;                                    // initialized to $12,000 for any player; used in game play
-let dogesHeld = 0;                                          // set in intializeInvestment: dogesHeld = playerInvests/dogeStartingPrice; math for the win logic needs this
-let profitGoal = 0;                                         // set by event handler after player clicks their desired profit goal
-let playerInvests = 0;                                      // set by event handler after player clicks their desired investment
-let newPlayer = null;                                       // set by event handler after player clicks Start
-let dogeCurrentPrice = dogeStartingPrice;                   // will be initialized to dogeStartingPrice when the playNow event handler is fired off; changes as game is played
-let numLives = 3;                                           // initialized to 3; damnRobinhood() takes away 1 life for each card held in the player's deck
-let gameActive = false;                                     // initialized to false until createPlayer() is called
-let boardPositions = [];                                    // set by fillBoard() function
-let boardSpace = document.querySelectorAll(`.playable`);    // used in fillBoard()
 
 // *********** CLASSES ***********
 // the Player class creates a new player when the .playNow button is clicked
@@ -79,8 +102,6 @@ class Player {
   constructor(goal, investment){
     this.myGoal = goal,
     this.myInvestment = investment,
-    this.numOfGoodBois = dogesHeld,
-    this.currentBalance = bankBalance,
     this.cardsPlayed = [],
     this.location = startAndFinish;
   }
@@ -93,6 +114,10 @@ class Player {
   // the roll method is called when the diceOnBoard event listener is called, and it determines how far around the board the player moves
   roll(){
     return Math.floor(Math.random() * diceSet.length) + 1;
+  }
+
+  getBalance(){
+    return bankBalance;
   }
 }
 
@@ -124,7 +149,6 @@ function initializeInvestment(event) {
   playerInvests = parseInt(event.target.value);
   investmentDisplay.innerHTML = `wow big spender! much monies invested: $${playerInvests}`;
   bankBalance = 12000-playerInvests;
-  dogesHeld = playerInvests/dogeStartingPrice;
 }
 
 // createPlayer() - called by the playNow event handler
@@ -133,6 +157,8 @@ function createPlayer() {
   gameActive = true;
   newPlayer = new Player(profitGoal, playerInvests);
   newPlayer.location.innerHTML = `${playerOne}`;
+  dogesHeld = playerInvests/dogeStartingPrice; 
+  earningTotal = dogeCurrentPrice * dogesHeld;
 }
 
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
@@ -141,9 +167,9 @@ function findCard(cardType){
   return possibleChoices.find(choice => choice.type === cardType);
 }
 // --- make six decks, each housing a specfic card type
-let dogeMinerDeck = [...Array(12)].map(_ => findCard('dogeMiner'));
+let dogeMinerDeck = [...Array(19)].map(_ => findCard('dogeMiner'));
 let badTweetDeck = [...Array(21)].map(_ => findCard('badTweet'));
-let lifeDeck = [...Array(25)].map(_ => findCard('lifeEvent'));
+let lifeDeck = [...Array(18)].map(_ => findCard('lifeEvent'));
 let goodTweetDeck = [...Array(21)].map(_ => findCard('goodTweet'));
 let robinhoodDeck = [...Array(3)].map(_ => findCard('robinhood'));
 let memeLordDeck = [...Array(2)].map(_ => findCard('memeLord'));
@@ -200,7 +226,7 @@ drawCard.addEventListener(`click`, function () {
   newPlayer.pullsCard(cardIndex);
   // --- matches the "type" of each card and calls its function when the card is found
   switch(cardIndex.type){
-    case `goodTweet`:
+    case `goodTweet`: 
       return cardIndex.yayTweets();
     case `badTweet`:
       return cardIndex.sadTweets();
@@ -211,13 +237,8 @@ drawCard.addEventListener(`click`, function () {
     case `robinhood`:
       return cardIndex.damnRobinhood();
     case `memeLord`:
-      return cardIndex.goalBoost();        
+      return cardIndex.goalBoost();
   }
-
-  console.log(cardIndex);
-  console.log(newPlayer.cardsPlayed);
-  console.log(numLives);
-
 })
 
 // Event Handler for moving the player around the board - calls the roll() method of the Player object and sets player.location

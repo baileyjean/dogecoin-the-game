@@ -11,10 +11,11 @@ const drawCard = document.querySelector(`.drawsCard`);                          
 const diceOnBoard = document.querySelector(`.rollMe`)                                         // used in event handler for rolling the dice; determines how many places the player moves on the board
 const diceSet = [1,2,3,4];                                                                    // used in Player.rollDice method
 const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`       // used to draw player on the board
-const possibleChoices = [{                                                                    // All possible card types used in the game
+// All possible card types used in the game
+const possibleChoices = [{                                                                    
   type: `memeLord`,
   displayName:'Meme Lord',
-  bumpPrice: function() {
+  goalBoost: function() {
     if(dogeCurrentPrice < profitGoal/2) {
       dogeCurrentPrice = profitGoal/2;
     } else {
@@ -174,7 +175,7 @@ shuffle(Deck);
 shuffle(Deck);
 shuffle(Deck);
 
-// bumpPrice() - tied to memeLord cards; gets player halfway to their profit goal the first pull, then all the way there on the second
+// fluctuatePrice
 
 
 // *********** EVENT LISTENERS ***********
@@ -193,18 +194,28 @@ playNow.addEventListener(`click`, createPlayer);
 
 // Event Handler for newPlayer.pullsCard()
 drawCard.addEventListener(`click`, function () {
+  // --- cardIndex draws a card from the top of the deck (by pulling the first item of the array)
   let cardIndex = Deck.shift();
+  // --- pushes that card onto the player's hand
   newPlayer.pullsCard(cardIndex);
-  if(cardIndex.type === `lifeEvent`){
-    return cardIndex.lifeEvent();
-  } else if(cardIndex.type === `goodTweet`){
-    return cardIndex.yayTweets();
-  } else if(cardIndex.type === `badTweet`){
-    return cardIndex.sadTweets();
-  } else
+  // --- matches the "type" of each card and calls its function when the card is found
+  switch(cardIndex.type){
+    case `goodTweet`:
+      return cardIndex.yayTweets();
+    case `badTweet`:
+      return cardIndex.sadTweets();
+    case `lifeEvent`:
+      return cardIndex.lifeEvent();
+    case `dogeMiner`:
+      return cardIndex.mineDoges();
+    case `robinhood`:
+      return cardIndex.damnRobinhood();
+    case `memeLord`:
+      return cardIndex.goalBoost();        
+  }
+
   console.log(cardIndex);
   console.log(newPlayer.cardsPlayed);
-  console.log(Deck);
   console.log(numLives);
 
 })
@@ -212,13 +223,13 @@ drawCard.addEventListener(`click`, function () {
 // Event Handler for moving the player around the board - calls the roll() method of the Player object and sets player.location
 diceOnBoard.addEventListener(`click`, function () {
   let move = newPlayer.roll();
-  // Take dice roll, target boardPositions by roll number, update player location to target element
+  // --- Take dice roll, target boardPositions by roll number, update player location to target element
   let currentIndex = boardPositions.indexOf(newPlayer.location);
   let targetElement = boardPositions[move + currentIndex];
-  // Reset player's location
+  // --- Reset player's location
   newPlayer.location.innerHTML = ``;
   let remainingPos = boardPositions.length - currentIndex;
-  // Check if player is at end position and place player on start-end if yes
+  // --- Check if player is at end position and place player on start-end if yes
   if(remainingPos <= move){
     let resetLocation= boardPositions[0];
     newPlayer.location = resetLocation;

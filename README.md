@@ -8,21 +8,27 @@
 
 ***
 ### Requirements
-- [x] Minimum of two web pages - with navigation between them
 - [x] Single Player Mode
-- [x] Player Object
-- [x] Six unique card deck arrays
-- [x] Master deck for the game board
+- [x] Player Class with properties to track game progess
+- [x] Player Class with methods to pull cards and roll dice
+- [x] Card array with unique functions for each type of card
+- [x] Master deck for the game board (made up of six, smaller decks - one for each type)
 - [x] Shuffled card deck
 - [x] Randomized dice roll
-- [] Bank Account/Investment Counter/Progress bar
-- [] Game Loss Logic (3 Robinhood cards = LOSE / Profit goal not met / Bank Account is 0 for x amount of turns)
-- [] Game Win Logic (Reach profit goal)
+- [x] Player movement around the board
+- [x] Sorted array holding playable board positions in order
+- [x] Randomized math to add or subtract to current Dogecoin price as the game is played
+- [] Pop-up messages with card info when player pulls a card
+- [] Bank Account Info display
+- [] Investment return display
+- [] Player status display
+- [] Game Loss Logic (3 Robinhood cards || Profit goal not met before end)
+- [] Game Win Logic (Reach profit goal by the end || Pull 2 Meme Lord cards)
 
 ### Bonuses
 
-- [] Adding a timer
 - [] Multiplayer mode
+- [] Adding a timer
 - [] Doge or Crypto API
 - [] Player piece animations
 - [] Dice animations

@@ -56,20 +56,20 @@ const possibleChoices = [{
     console.log(`Player pulled Good Tweet`);
   }
 },{
-  type: `lifeEvent`,
-  displayName: `Life Event`,
-  lifeEvent: function() {
-    console.log(`Player pulled Life Event`)
-    let lifeHappens = [`car`, `sickness`, `drinking problems`, `your niece`];
-      switch(lifeHappens[Math.floor(Math.random() * lifeHappens.length)]){
+  type: `lifeHappens`,
+  displayName: `Life Happens`,
+  lifeHappens: function() {
+    console.log(`Player pulled Life Happens`)
+    let shitHappens = [`car`, `debt collectors`, `drinking problems`, `your niece`];
+      switch(shitHappens[Math.floor(Math.random() * shitHappens.length)]){
         case(`car`):{
           bankBalance = bankBalance - 500
-          console.log(`Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing.`);
+          console.log(`Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing. -$500`);
           break;
         }
-        case(`sickness`):{
+        case(`debt collectors`):{
           bankBalance = bankBalance - 100
-          console.log(`In sickness and in health... at least you still have your Doges.`);
+          console.log(`Hopefully you can be better with your money when you're a Meme Millionaire... -$100.`);
           break;
         }
         case(`drinking problems`):{
@@ -88,7 +88,6 @@ const possibleChoices = [{
   type: `dogeMiner`,
   displayName: `Doge Miner`,
   mineDoges: function() {
-    // add before and after calculation to see if you successfully mined any
     dogesHeld += dogesHeld * (Math.floor(Math.random() * 5));
     earningTotal = (dogeCurrentPrice * dogesHeld) - playerInvests;
 
@@ -177,12 +176,12 @@ function findCard(cardType){
 // --- make six decks, each housing a specfic card type
 let dogeMinerDeck = [...Array(19)].map(_ => findCard('dogeMiner'));
 let badTweetDeck = [...Array(21)].map(_ => findCard('badTweet'));
-let lifeDeck = [...Array(18)].map(_ => findCard('lifeEvent'));
+let lifeHappensDeck = [...Array(18)].map(_ => findCard('lifeHappens'));
 let goodTweetDeck = [...Array(21)].map(_ => findCard('goodTweet'));
 let robinhoodDeck = [...Array(3)].map(_ => findCard('robinhood'));
 let memeLordDeck = [...Array(2)].map(_ => findCard('memeLord'));
 // --- Create a MASTER DECK for game play, containing all the deck arrays just created
-const Deck = [...dogeMinerDeck, ...badTweetDeck, ...lifeDeck, ...goodTweetDeck, ...robinhoodDeck, ...memeLordDeck];
+const Deck = [...dogeMinerDeck, ...badTweetDeck, ...lifeHappensDeck, ...goodTweetDeck, ...robinhoodDeck, ...memeLordDeck];
 
 // shuffle(array) - Uses the Fisher-Yates Shuffle algorithm, as taken from Stackoverflow; comments from creator preserved in function below
 // --- https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -235,8 +234,8 @@ drawCard.addEventListener(`click`, function () {
       return cardIndex.yayTweets();
     case `badTweet`:
       return cardIndex.sadTweets();
-    case `lifeEvent`:
-      return cardIndex.lifeEvent();
+    case `lifeHappens`:
+      return cardIndex.lifeHappens();
     case `dogeMiner`:
       return cardIndex.mineDoges();
     case `robinhood`:

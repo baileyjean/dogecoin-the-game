@@ -1,4 +1,5 @@
 body {
+  color: #f2f4fb;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

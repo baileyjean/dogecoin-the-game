@@ -27,72 +27,80 @@ const possibleChoices = [{
   type: `memeLord`,
   displayName:'Meme Lord',
   goalBoost: function() {
-    console.log(`MEME LORD!`)
-    if(dogeCurrentPrice < profitGoal/2) {
-      console.log(`Doge price was ${dogeCurrentPrice}`)
-      dogeCurrentPrice = profitGoal/2;
-      console.log(`Now it's ${dogeCurrentPrice}`)
+    if(earningTotal < profitGoal/2) {
+      earningTotal = profitGoal/2;
     } else {
-      console.log(`Doge price was ${dogeCurrentPrice}`)
-      dogeCurrentPrice = profitGoal;
-      console.log(`Now it's ${dogeCurrentPrice}`)
-      console.log(`All Hail the Meme Lord - Hope You Make It To The Finish Before Robinhood Catches On`);
+      earningTotal = profitGoal;
     } 
+
+    console.log(`Player pulled Meme Lord`);
   }
 },{
   type: `robinhood`,
   displayName: `Robinhood`,
   damnRobinhood: function() {
-    console.log(`ROBINHOOD - You had ${numLives} Lives...`);
     if(numLives >= 1){  
       numLives = numLives - 1;
-      console.log(`Now you have ${numLives} left`);
     } else if(numLives === 0){
-      console.log(`No more lives... you lose`);
+      console.log(`YOU LOSE`)
     }
+
+    console.log(`Player pulled Robinhood`);
   }
 },{
   type: `goodTweet`,
   displayName: `Good Tweet`,
   yayTweets: function() {
-
-    console.log(`GOOD TWEET - dogeCurrentPrice was ${dogeCurrentPrice}`)
-    dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 20) + 1);
-    earningTotal = dogeCurrentPrice * dogesHeld;
-    console.log(`omg now it's $${dogeCurrentPrice}!`);
-    console.log(`Your investment is worth ${earningTotal}`);
+    dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 20));
+    earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
+    console.log(`Player pulled Good Tweet`);
   }
 },{
   type: `lifeEvent`,
   displayName: `Life Event`,
   lifeEvent: function() {
-    console.log(`life happens... ope`);
-    console.log(`You have ${dogesHeld} dogecoins`)
-    console.log(`Each dogecoin is worth: ${dogeCurrentPrice}`);
-    console.log(`Your investment is worth ${earningTotal}`);
+    console.log(`Player pulled Life Event`)
+    let lifeHappens = [`car`, `sickness`, `drinking problems`, `your niece`];
+      switch(lifeHappens[Math.floor(Math.random() * lifeHappens.length)]){
+        case(`car`):{
+          bankBalance = bankBalance - 500
+          console.log(`Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing.`);
+          break;
+        }
+        case(`sickness`):{
+          bankBalance = bankBalance - 100
+          console.log(`In sickness and in health... at least you still have your Doges.`);
+          break;
+        }
+        case(`drinking problems`):{
+          bankBalance = bankBalance - 300
+          console.log(`You need new coping mechanisms... that night of drinking cost you $300.`);
+          break;
+        }
+        case(`your niece`):{
+          dogesHeld = dogesHeld - (dogesHeld * .5)
+          console.log(`Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`);
+          break;
+        }
+    }
   }
 },{
   type: `dogeMiner`,
   displayName: `Doge Miner`,
   mineDoges: function() {
-    console.log(`DOGEMINER - You once held: ${dogesHeld} dogecoins...`);
-    
     // add before and after calculation to see if you successfully mined any
-    dogesHeld += dogesHeld * (Math.floor(Math.random() * 5) + 1);
-    earningTotal = dogeCurrentPrice * dogesHeld;
-    console.log(`Now you hold ${dogesHeld} dogecoins!!!!`);
-    console.log(`Your investment is now worth ${earningTotal}`);
+    dogesHeld += dogesHeld * (Math.floor(Math.random() * 5));
+    earningTotal = (dogeCurrentPrice * dogesHeld) - playerInvests;
+
+    console.log(`Player pulled Doge Miner`);
   }
 },{
   type: `badTweet`,
   displayName: `Bad Tweet`,
   sadTweets: function() {
-    console.log(`Player's Investment BEFORE: ${earningTotal}`);
-    console.log(`BAD TWEET - dogeCurrentPrice was: $${dogeCurrentPrice}`);
     dogeCurrentPrice = dogeCurrentPrice * 0.2;
-    earningTotal = dogeCurrentPrice * dogesHeld;
-    console.log(`Player's Investment AFTER: ${earningTotal}`)
-    console.log(`Now it's $${dogeCurrentPrice}`);
+    earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
+    console.log(`Player pulled Bad Tweet`)
   }
 }]
 
@@ -201,9 +209,6 @@ shuffle(Deck);
 shuffle(Deck);
 shuffle(Deck);
 
-// fluctuatePrice
-
-
 // *********** EVENT LISTENERS ***********
 // Event Handler for setProfitGoal()
 setGoal.forEach(function(button) {
@@ -259,4 +264,6 @@ diceOnBoard.addEventListener(`click`, function () {
   }
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
+  console.log(`PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`);
+  console.log(`GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`)
 })

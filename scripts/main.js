@@ -32,9 +32,7 @@ const possibleChoices = [{
       earningTotal = profitGoal/2;
     } else {
       earningTotal = profitGoal;
-    } 
-
-    gameMessage.innerHTML = `Player pulled Meme Lord`;
+    }
   }
 },{
   type: `robinhood`,
@@ -42,11 +40,11 @@ const possibleChoices = [{
   damnRobinhood: function() {
     if(numLives >= 1){  
       numLives = numLives - 1;
-    } else if(numLives === 0){
-      console.log(`YOU LOSE`)
+      window.alert(`Player pulled Robinhood card. Number of Lives: ${numLives}`);
+    } else {
+      gameActive = false;
+      window.alert(`GAME OVER. REFRESH PAGE TO RESTART`);
     }
-
-    gameMessage.innerHTML = `Player pulled Robinhood`;
   }
 },{
   type: `goodTweet`,
@@ -54,33 +52,33 @@ const possibleChoices = [{
   yayTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 20));
     earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
-    gameMessage.innerHTML = `Player pulled Good Tweet`;
+    //gameMessage.innerHTML = `Player pulled Good Tweet`;
   }
 },{
   type: `lifeHappens`,
   displayName: `Life Happens`,
   lifeHappens: function() {
-    gameMessage.innerHTML = `Player pulled Life Happens`;
+    //gameMessage.innerHTML = `Player pulled Life Happens`;
     let shitHappens = [`car`, `debt collectors`, `drinking problems`, `your niece`];
       switch(shitHappens[Math.floor(Math.random() * shitHappens.length)]){
         case(`car`):{
           bankBalance = bankBalance - 500
-          gameMessage.innerHTML = `Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing. -$500`;
+          //gameMessage.innerHTML = `Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing. -$500`;
           break;
         }
         case(`debt collectors`):{
           bankBalance = bankBalance - 100
-          gameMessage.innerHTML = `Hopefully you can be better with your money when you're a Meme Millionaire... -$100.`;
+          //gameMessage.innerHTML = `Hopefully you can be better with your money when you're a Meme Millionaire... -$100.`;
           break;
         }
         case(`drinking problems`):{
           bankBalance = bankBalance - 300
-          gameMessage.innerHTML = `You need new coping mechanisms... that night of drinking cost you $300.`;
+          //gameMessage.innerHTML = `You need new coping mechanisms... that night of drinking cost you $300.`;
           break;
         }
         case(`your niece`):{
           dogesHeld = dogesHeld - (dogesHeld * .5)
-          gameMessage.innerHTML = `Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`;
+          //gameMessage.innerHTML = `Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`;
           break;
         }
     }
@@ -91,8 +89,8 @@ const possibleChoices = [{
   mineDoges: function() {
     dogesHeld += dogesHeld * (Math.floor(Math.random() * 5));
     earningTotal = (dogeCurrentPrice * dogesHeld) - playerInvests;
-
-    gameMessage.innerHTML = `Player pulled Doge Miner`;
+    //let dogeMinerText = `Player pulled dogeMiner`;
+    //gameMessage.appendChild(dogeMinerText);
   }
 },{
   type: `badTweet`,
@@ -100,7 +98,7 @@ const possibleChoices = [{
   sadTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice * 0.2;
     earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
-    gameMessage.innerHTML = `Player pulled Bad Tweet`;
+    //gameMessage.innerHTML = `Player pulled Bad Tweet`;
   }
 }]
 
@@ -146,7 +144,17 @@ fillBoard();
 // --- sets goalDisplay to the player's selection
 function setProfitGoal(event) {
   profitGoal = parseInt(event.target.value);
-  goalDisplay.innerHTML = `Your profit goal is set to: $${profitGoal}. TO THE MOON!`;
+  switch(profitGoal){
+    case(50000):
+      goalDisplay.innerHTML = `You selected $50,000. #weak`;
+      break;
+    case(100000):
+      goalDisplay.innerHTML = `You selected $100,000. #doOnlyGoodEveryday`;
+      break;
+    case(1000000):
+      goalDisplay.innerHTML = `You selected $1,000,000! #ToTheMoon`;
+      break;  
+  }
 }
 
 // initializeInvestment() - player must choose between three investment choices to begin game
@@ -155,7 +163,17 @@ function setProfitGoal(event) {
 // --- handles the math for player's bank balance and dogecoins held
 function initializeInvestment(event) {
   playerInvests = parseInt(event.target.value);
-  investmentDisplay.innerHTML = `wow big spender! much monies invested: $${playerInvests}`;
+  switch(playerInvests){
+    case(1000):
+      investmentDisplay.innerHTML = `You invested $1000! #stonks`;
+      break;
+    case(5000):
+      investmentDisplay.innerHTML = `You invested $5000. #hedgingBets`;
+      break;
+    case(10000):
+      investmentDisplay.innerHTML = `You invested $10,000! #URTheOnePercent`;
+      break;  
+  }
   bankBalance = 12000-playerInvests;
 }
 
@@ -229,6 +247,11 @@ drawCard.addEventListener(`click`, function () {
   let cardIndex = Deck.shift();
   // --- pushes that card onto the player's hand
   newPlayer.pullsCard(cardIndex);
+  // --- update game message board with status
+  let newCardP = document.createElement("P");
+  let cardText = document.createTextNode(`You pulled a ${cardIndex.displayName}`);
+  newCardP.appendChild(cardText);
+  gameMessage.prepend(newCardP);
   // --- matches the "type" of each card and calls its function when the card is found
   switch(cardIndex.type){
     case `goodTweet`: 
@@ -262,10 +285,13 @@ diceOnBoard.addEventListener(`click`, function () {
     resetLocation.innerHTML = playerOne;
     return;
   }
+  let newRollP = document.createElement("P");
+  let rollText = document.createTextNode(`You rolled a ${move}`);
+  newRollP.appendChild(rollText);
+  gameMessage.prepend(newRollP);
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
-  gameMessage.innerHTML = `Player rolled a ${move}`;
 
-  gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;
-  gameMessage.innerHTML = `GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`
+  //gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;
+  //gameMessage.innerHTML = `GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`
 })

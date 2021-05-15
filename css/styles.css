@@ -59,7 +59,7 @@ h3 {
 
 .drawCard {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 3;
   text-align: center;
   border: 1px solid white;
 }
@@ -68,21 +68,26 @@ h3 {
   grid-column: 3;
   grid-row: 1;
   display: flex;
+  flex-direction: column;
   min-height: auto;
-  max-height: 20vh;
+  max-height: 30vh;
+  max-width: 40vw;
   overflow: scroll;
   text-align: center;
-  border: 1px solid white;
+  font-size: small;
+  color: black;
+  background: radial-gradient(328px at 2.9% 15%, rgb(191, 224, 251) 0%, rgb(232, 233, 251) 25.8%, rgb(252, 239, 250) 50.8%, rgb(234, 251, 251) 77.6%, rgb(240, 251, 244) 100.7%);
+  border: 1px solid black;
 }
 
 form {
-  grid-column: 2;
-  grid-row: 2;
+  grid-column: 3;
+  grid-row: 3;
   text-align: center;
 }
 
 .stort {
-  grid-column: 4;
+  grid-column: 3;
   grid-row: 2;
   text-align: center;
 }
@@ -99,7 +104,7 @@ form {
 
 .rollDice {
   grid-column: 5;
-  grid-row: 2;
+  grid-row: 3;
   text-align: center;
   border: 1px solid white;
 }

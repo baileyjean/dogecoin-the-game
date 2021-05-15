@@ -57,11 +57,19 @@ h3 {
   border: 1px solid white;
 }
 
+.profit-goals {
+  cursor: context-menu;
+}
+
 .drawCard {
   grid-column: 1;
   grid-row: 3;
   text-align: center;
   border: 1px solid white;
+}
+
+.drawMe {
+  cursor: pointer;
 }
 
 .game-messages {
@@ -70,8 +78,7 @@ h3 {
   display: flex;
   flex-direction: column;
   min-height: auto;
-  max-height: 30vh;
-  max-width: 40vw;
+  max-height: 20vh;
   overflow: scroll;
   text-align: center;
   font-size: small;
@@ -86,10 +93,19 @@ form {
   text-align: center;
 }
 
+.goToHome {
+  cursor: crosshair;
+}
+
 .stort {
   grid-column: 3;
   grid-row: 2;
   text-align: center;
+}
+
+.playNow {
+  border-radius: 36%;
+  cursor: copy;
 }
 
 
@@ -102,10 +118,18 @@ form {
   border: 1px solid white;
 }
 
+.initial-invest {
+  cursor: context-menu;
+}
+
 .rollDice {
   grid-column: 5;
   grid-row: 3;
   text-align: center;
   border: 1px solid white;
+}
+
+.rollMe{
+  cursor: pointer;
 }
 

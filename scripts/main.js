@@ -8,7 +8,8 @@ const playNow = document.querySelector(`.playNow`);                             
 const goalDisplay = document.getElementById(`goalSetTo`);                                     // used in setProfitGoal() to display desired goal
 const investmentDisplay = document.getElementById(`playerInvests`);                           // used in initializeInvestment() to display desired investment
 const drawCard = document.querySelector(`.drawsCard`);                                        // used in event handler for card deck and calls Player.pullsCard() method 
-const diceOnBoard = document.querySelector(`.rollMe`)                                         // used in event handler for rolling the dice; determines how many places the player moves on the board
+const diceOnBoard = document.querySelector(`.rollMe`);                                        // used in event handler for rolling the dice; determines how many places the player moves on the board
+const gameMessage = document.querySelector(`.game-messages`);                                 // used in possibleChoices functions to write messages to the screen
 const diceSet = [1,2,3,4];                                                                    // used in Player.rollDice method
 const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`       // used to draw player on the board
 let bankBalance = 12000;                                    // initialized to $12,000 for any player; used in game play
@@ -33,7 +34,7 @@ const possibleChoices = [{
       earningTotal = profitGoal;
     } 
 
-    console.log(`Player pulled Meme Lord`);
+    gameMessage.innerHTML = `Player pulled Meme Lord`;
   }
 },{
   type: `robinhood`,
@@ -45,7 +46,7 @@ const possibleChoices = [{
       console.log(`YOU LOSE`)
     }
 
-    console.log(`Player pulled Robinhood`);
+    gameMessage.innerHTML = `Player pulled Robinhood`;
   }
 },{
   type: `goodTweet`,
@@ -53,33 +54,33 @@ const possibleChoices = [{
   yayTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 20));
     earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
-    console.log(`Player pulled Good Tweet`);
+    gameMessage.innerHTML = `Player pulled Good Tweet`;
   }
 },{
   type: `lifeHappens`,
   displayName: `Life Happens`,
   lifeHappens: function() {
-    console.log(`Player pulled Life Happens`)
+    gameMessage.innerHTML = `Player pulled Life Happens`;
     let shitHappens = [`car`, `debt collectors`, `drinking problems`, `your niece`];
       switch(shitHappens[Math.floor(Math.random() * shitHappens.length)]){
         case(`car`):{
           bankBalance = bankBalance - 500
-          console.log(`Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing. -$500`);
+          gameMessage.innerHTML = `Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing. -$500`;
           break;
         }
         case(`debt collectors`):{
           bankBalance = bankBalance - 100
-          console.log(`Hopefully you can be better with your money when you're a Meme Millionaire... -$100.`);
+          gameMessage.innerHTML = `Hopefully you can be better with your money when you're a Meme Millionaire... -$100.`;
           break;
         }
         case(`drinking problems`):{
           bankBalance = bankBalance - 300
-          console.log(`You need new coping mechanisms... that night of drinking cost you $300.`);
+          gameMessage.innerHTML = `You need new coping mechanisms... that night of drinking cost you $300.`;
           break;
         }
         case(`your niece`):{
           dogesHeld = dogesHeld - (dogesHeld * .5)
-          console.log(`Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`);
+          gameMessage.innerHTML = `Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`;
           break;
         }
     }
@@ -91,7 +92,7 @@ const possibleChoices = [{
     dogesHeld += dogesHeld * (Math.floor(Math.random() * 5));
     earningTotal = (dogeCurrentPrice * dogesHeld) - playerInvests;
 
-    console.log(`Player pulled Doge Miner`);
+    gameMessage.innerHTML = `Player pulled Doge Miner`;
   }
 },{
   type: `badTweet`,
@@ -99,7 +100,7 @@ const possibleChoices = [{
   sadTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice * 0.2;
     earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
-    console.log(`Player pulled Bad Tweet`)
+    gameMessage.innerHTML = `Player pulled Bad Tweet`;
   }
 }]
 
@@ -263,6 +264,8 @@ diceOnBoard.addEventListener(`click`, function () {
   }
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
-  console.log(`PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`);
-  console.log(`GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`)
+  gameMessage.innerHTML = `Player rolled a ${move}`;
+
+  gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;
+  gameMessage.innerHTML = `GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`
 })

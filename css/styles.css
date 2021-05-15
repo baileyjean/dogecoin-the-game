@@ -5,6 +5,7 @@ body {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  height: 100vh;
   background: linear-gradient(171.8deg, rgb(238, 156, 167) 13.8%, rgb(246, 204, 162) 82.6%);
   /*
   PRETTY RAINBOW FOR WINNER MESSAGE - background: radial-gradient(1029px at 0.1% 1.5%, rgba(252, 15, 15, 0.51) 0%, rgba(252, 180, 24, 0.54) 14.7%, rgba(255, 253, 26, 0.53) 29.7%, rgba(85, 255, 18, 0.53) 47.1%, rgba(16, 215, 255, 0.53) 67.8%, rgba(130, 10, 255, 0.51) 86.7%, rgba(255, 22, 181, 0.53) 99.9%);
@@ -14,19 +15,14 @@ body {
   */
   margin: 0;
 }
-
-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid white;
+h3 {
+  margin: 0;
 }
 
 .game-board {
   display: grid;
-  height: 45vh;
-  width: 45vw;
+  height: 90vh;
+  width: 90vw;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
@@ -46,21 +42,13 @@ section {
   justify-content: space-evenly;
 }
 
-/*
-
-.header {
-  display: grid;
-  grid-template-columns: auto;
-  justify-content: center;
-  align-items: center;
-}
-
-section {
+.UI-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 1px solid white;
+  height: 60vh;
+  width: 60vw;
+  position: absolute;
 }
-
-*/

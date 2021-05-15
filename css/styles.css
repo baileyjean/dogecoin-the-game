@@ -7,12 +7,6 @@ body {
   align-items: center;
   height: 100vh;
   background: linear-gradient(171.8deg, rgb(238, 156, 167) 13.8%, rgb(246, 204, 162) 82.6%);
-  /*
-  PRETTY RAINBOW FOR WINNER MESSAGE - background: radial-gradient(1029px at 0.1% 1.5%, rgba(252, 15, 15, 0.51) 0%, rgba(252, 180, 24, 0.54) 14.7%, rgba(255, 253, 26, 0.53) 29.7%, rgba(85, 255, 18, 0.53) 47.1%, rgba(16, 215, 255, 0.53) 67.8%, rgba(130, 10, 255, 0.51) 86.7%, rgba(255, 22, 181, 0.53) 99.9%);
-  PINK AND ORANGE (REALLY GOOD) - background: linear-gradient(171.8deg, rgb(238, 156, 167) 13.8%, rgb(246, 204, 162) 82.6%);
-  LESS SUBTLE BUT CUTE - background: linear-gradient(102.7deg, rgb(253, 218, 255) 8.2%, rgb(223, 173, 252) 19.6%, rgb(173, 205, 252) 36.8%, rgb(173, 252, 244) 73.2%, rgb(202, 248, 208) 90.9%);
-  SUBTLE - 
-  */
   margin: 0;
 }
 h3 {
@@ -56,35 +50,41 @@ h3 {
 .profit {
   grid-column: 1;
   grid-row: 1;
+  text-align: center;
   border: 1px solid white;
 }
 
 .drawCard {
   grid-column: 1;
   grid-row: 2;
+  text-align: center;
   border: 1px solid white;
 }
 
 .stort {
   grid-column: 3;
   grid-row: 1;
+  text-align: center;
   border: 1px solid white;
 }
 
 form {
   grid-column: 3;
   grid-row: 2;
+  text-align: center;
 }
 
 .invest {
   grid-column: 5;
   grid-row: 1;
+  text-align: center;
   border: 1px solid white;
 }
 
 .rollDice {
   grid-column: 5;
   grid-row: 2;
+  text-align: center;
   border: 1px solid white;
 }
 

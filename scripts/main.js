@@ -30,21 +30,24 @@ const possibleChoices = [{
   goalBoost: function() {
     if(newPlayer.earningTotal < (newPlayer.myGoal)/2) {
       newPlayer.earningTotal = (newPlayer.myGoal)/2;
-    } else{
+      window.alert(`You're halfway to your profit goal!`);
+    } else if(newPlayer.earningTotal < newPlayer.myGoal){
       newPlayer.earningTotal = newPlayer.myGoal;
-      // if the logic here so it checks the players hand for the number of Meme Lord cards
+      window.alert(`You've achieved your profit goal!`);
+    } else if(newPlayer.earningTotal > newPlayer.myGoal){
+      window.alert(`Your profit goal has already been met!`);
     }
   }
 },{
   type: `robinhood`,
   displayName: `Robinhood`,
   damnRobinhood: function() {
-    if(newPlayer.numLives >= 1){  
+    if(newPlayer.numLives > 1){  
       newPlayer.numLives -= 1;
       window.alert(`Player pulled Robinhood card. Number of Lives: ${newPlayer.numLives}`);
-    } else {
+    } else if(newPlayer.numLives <= 1){
       gameActive = false;
-      window.alert(`GAME OVER. REFRESH PAGE TO RESTART`);
+      window.alert(`GAME OVER. REFRESH PAGE TO PLAY AGAIN`);
     }
   }
 },{
@@ -189,7 +192,7 @@ function createPlayer() {
   newPlayer.bankBalance = bankBalance - playerInvests;
   newPlayer.dogesHeld = playerInvests/dogeStartingPrice; 
   newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld;
-  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal}`)
+  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal} || NumLives: ${newPlayer.numLives}`)
 }
 
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
@@ -296,7 +299,7 @@ diceOnBoard.addEventListener(`click`, function () {
   gameMessage.prepend(newRollP);
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
-  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal}`)
+  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal} || NumLives: ${newPlayer.numLives}`)
   //gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;
   //gameMessage.innerHTML = `GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`
 })

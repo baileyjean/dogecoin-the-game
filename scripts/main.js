@@ -11,7 +11,7 @@ const drawCard = document.querySelector(`.drawMe`);                             
 const diceOnBoard = document.querySelector(`.rollMe`);                                        // used in event handler for rolling the dice; determines how many places the player moves on the board
 const gameMessage = document.querySelector(`.game-messages`);                                 // used in possibleChoices functions to write messages to the screen
 const diceSet = [1,2,3,4];                                                                    // used in Player.rollDice method
-const playerOne = `<img src="./css/images/playerOne.jpg" width="42px" height="50px" />`       // used to draw player on the board
+const playerOne = `<img src="./css/images/playerOne.jpg" width="60vw" height="75vh" />`       // used to draw player on the board
 let bankBalance = 12000;                                    // initialized to $12,000 for any player; used in game play
 let playerInvests = 0;                                      // set by event handler after player clicks their desired investment
 let profitGoal = 0;                                         // set by event handler after player clicks their desired profit goal
@@ -28,19 +28,20 @@ const possibleChoices = [{
   type: `memeLord`,
   displayName:'Meme Lord',
   goalBoost: function() {
-    if(earningTotal < profitGoal/2) {
-      earningTotal = profitGoal/2;
-    } else {
-      earningTotal = profitGoal;
+    if(newPlayer.earningTotal < (newPlayer.myGoal)/2) {
+      newPlayer.earningTotal = (newPlayer.myGoal)/2;
+    } else{
+      newPlayer.earningTotal = newPlayer.myGoal;
+      // if the logic here so it checks the players hand for the number of Meme Lord cards
     }
   }
 },{
   type: `robinhood`,
   displayName: `Robinhood`,
   damnRobinhood: function() {
-    if(numLives >= 1){  
-      numLives = numLives - 1;
-      window.alert(`Player pulled Robinhood card. Number of Lives: ${numLives}`);
+    if(newPlayer.numLives >= 1){  
+      newPlayer.numLives -= 1;
+      window.alert(`Player pulled Robinhood card. Number of Lives: ${newPlayer.numLives}`);
     } else {
       gameActive = false;
       window.alert(`GAME OVER. REFRESH PAGE TO RESTART`);
@@ -51,7 +52,7 @@ const possibleChoices = [{
   displayName: `Good Tweet`,
   yayTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 20));
-    earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
+    newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld - newPlayer.myInvestment;
     //gameMessage.innerHTML = `Player pulled Good Tweet`;
   }
 },{
@@ -62,22 +63,22 @@ const possibleChoices = [{
     let shitHappens = [`car`, `debt collectors`, `drinking problems`, `your niece`];
       switch(shitHappens[Math.floor(Math.random() * shitHappens.length)]){
         case(`car`):{
-          bankBalance = bankBalance - 500
+          newPlayer.bankBalance -= 500
           //gameMessage.innerHTML = `Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing. -$500`;
           break;
         }
         case(`debt collectors`):{
-          bankBalance = bankBalance - 100
+          newPlayer.bankBalance -= 100
           //gameMessage.innerHTML = `Hopefully you can be better with your money when you're a Meme Millionaire... -$100.`;
           break;
         }
         case(`drinking problems`):{
-          bankBalance = bankBalance - 300
+          newPlayer.bankBalance -= 300
           //gameMessage.innerHTML = `You need new coping mechanisms... that night of drinking cost you $300.`;
           break;
         }
         case(`your niece`):{
-          dogesHeld = dogesHeld - (dogesHeld * .5)
+          newPlayer.dogesHeld -= (newPlayer.dogesHeld * .5)
           //gameMessage.innerHTML = `Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`;
           break;
         }
@@ -87,8 +88,8 @@ const possibleChoices = [{
   type: `dogeMiner`,
   displayName: `Doge Miner`,
   mineDoges: function() {
-    dogesHeld += dogesHeld * (Math.floor(Math.random() * 5));
-    earningTotal = (dogeCurrentPrice * dogesHeld) - playerInvests;
+    newPlayer.dogesHeld += newPlayer.dogesHeld * (Math.floor(Math.random() * 5));
+    newPlayer.earningTotal = (dogeCurrentPrice * newPlayer.dogesHeld) - newPlayer.myInvestment;
     //let dogeMinerText = `Player pulled dogeMiner`;
     //gameMessage.appendChild(dogeMinerText);
   }
@@ -97,7 +98,7 @@ const possibleChoices = [{
   displayName: `Bad Tweet`,
   sadTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice * 0.2;
-    earningTotal = dogeCurrentPrice * dogesHeld - playerInvests;
+    newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld - newPlayer.myInvestment;
     //gameMessage.innerHTML = `Player pulled Bad Tweet`;
   }
 }]
@@ -109,7 +110,11 @@ class Player {
     this.myGoal = goal,
     this.myInvestment = investment,
     this.cardsPlayed = [],
-    this.location = startAndFinish;
+    this.numLives = numLives,
+    this.dogesHeld = dogesHeld,
+    this.location = startAndFinish,
+    this.earningTotal = 0,
+    this.bankBalance = 0;
   }
   
   // the pullsCard method pushes a card from the Deck object when the player clicks the drawCard event handler
@@ -120,10 +125,6 @@ class Player {
   // the roll method is called when the diceOnBoard event listener is called, and it determines how far around the board the player moves
   roll(){
     return Math.floor(Math.random() * diceSet.length) + 1;
-  }
-
-  getBalance(){
-    return bankBalance;
   }
 }
 
@@ -164,17 +165,19 @@ function setProfitGoal(event) {
 function initializeInvestment(event) {
   playerInvests = parseInt(event.target.value);
   switch(playerInvests){
-    case(1000):
+    case(1000): {
       investmentDisplay.innerHTML = `You invested $1000! #stonks`;
       break;
-    case(5000):
+    }
+    case(5000): {
       investmentDisplay.innerHTML = `You invested $5000. #hedgingBets`;
       break;
-    case(10000):
+    }
+    case(10000):{
       investmentDisplay.innerHTML = `You invested $10,000! #URTheOnePercent`;
-      break;  
+      break;
+    }
   }
-  bankBalance = 12000-playerInvests;
 }
 
 // createPlayer() - called by the playNow event handler
@@ -183,8 +186,10 @@ function createPlayer() {
   gameActive = true;
   newPlayer = new Player(profitGoal, playerInvests);
   newPlayer.location.innerHTML = `${playerOne}`;
-  dogesHeld = playerInvests/dogeStartingPrice; 
-  earningTotal = dogeCurrentPrice * dogesHeld;
+  newPlayer.bankBalance = bankBalance - playerInvests;
+  newPlayer.dogesHeld = playerInvests/dogeStartingPrice; 
+  newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld;
+  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal}`)
 }
 
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
@@ -291,7 +296,7 @@ diceOnBoard.addEventListener(`click`, function () {
   gameMessage.prepend(newRollP);
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
-
+  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal}`)
   //gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;
   //gameMessage.innerHTML = `GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`
 })

@@ -81,3 +81,7 @@ form {
   margin: 0 auto;
   height: 8vh;
 }
+
+.goToBoard {
+  cursor: copy;
+}

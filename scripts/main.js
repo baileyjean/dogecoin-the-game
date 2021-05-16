@@ -186,9 +186,9 @@ function initializeInvestment(event) {
 // createPlayer() - called by the playNow event handler
 // TODO: error handling if player tries to start game without making profit/investment selections
 function createPlayer() {
-  gameActive = true;
   newPlayer = new Player(profitGoal, playerInvests);
   newPlayer.location.innerHTML = `${playerOne}`;
+  gameActive = true;
   newPlayer.bankBalance = bankBalance - playerInvests;
   newPlayer.dogesHeld = playerInvests/dogeStartingPrice; 
   newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld;
@@ -234,6 +234,18 @@ function shuffle(array) {
 shuffle(Deck);
 shuffle(Deck);
 shuffle(Deck);
+
+// checkWin - First attempt at making a function to check for a win
+function winOrLose() {
+  let printToContainer = document.querySelector(`.winOrLoseMessage`);
+  if((newPlayer.myGoal = newPlayer.earningTotal) && (newPlayer.numLives != 0) && (newPlayer.bankBalance >= 0)){
+    window.alert(`omg wow you win!`);
+    printToContainer.innerHTML = `<img src="./css/images/successDogeSmol.png"/>`;
+  } else{
+    window.alert(`so sad you lose`);
+    printToContainer.innerHTML = `<img src="./css/images/noDoge.jpg" />`;
+  }
+}
 
 // *********** EVENT LISTENERS ***********
 // Event Handler for setProfitGoal()
@@ -291,6 +303,7 @@ diceOnBoard.addEventListener(`click`, function () {
     let resetLocation= boardPositions[0];
     newPlayer.location = resetLocation;
     resetLocation.innerHTML = playerOne;
+    winOrLose();
     return;
   }
   let newRollP = document.createElement("P");
@@ -299,6 +312,7 @@ diceOnBoard.addEventListener(`click`, function () {
   gameMessage.prepend(newRollP);
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
+  
   console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal} || NumLives: ${newPlayer.numLives}`)
   //gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;
   //gameMessage.innerHTML = `GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`

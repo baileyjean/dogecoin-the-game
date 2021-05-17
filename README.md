@@ -1,17 +1,17 @@
 # Dogecoin the Game (Project 1 - HTML, CSS, Vanilla JS)
 ![Screenshot of the game logo](css/images/logo01.png)
 ## May 2021
-#### The concept and implementation for Dogecoin the Game was created over the course of about one week, between 08 May - 17 May 2021. Everything from the HTML pages to the main.js script was written between 10 May - 17 May 2021. 
+The concept and implementation for Dogecoin the Game was created over the course of about one week, between 08 May - 17 May 2021. Everything from the HTML pages to the main.js script was written between 10 May - 17 May 2021. 
 
 ## Idea & Code By: Bailey Leavitt
 
-#### [Dogecoin the Game](http://dogecoin-the-game.surge.sh) | [Creator's GitHub](https://www.github.com/baileyjean) | [Creator's LinkedIn](https://www.linkedin.com/in/baileyleavitt) | [Trello Board for Project](https://trello.com/b/7AK9tUIU/vanilla-js-game)
+[Dogecoin the Game](http://dogecoin-the-game.surge.sh) | [Creator's GitHub](https://www.github.com/baileyjean) | [Creator's LinkedIn](https://www.linkedin.com/in/baileyleavitt) | [Trello Board for Project](https://trello.com/b/7AK9tUIU/vanilla-js-game)
 
 ***
 
 ## Description
 
-#### **Dogecoin the Game** is a web-based browser board game, created for my Unit 1 capstone project in General Assembly's Software Engineering Immersive bootcamp. The game has 20 spaces, a 4-sided dice, and an 84-card *"Doge Deck"* with six distinct card types. To win, you must reach your profit goal, have a non-zero bank account, and have at least one remaining life by the time you get back to square 1. On each turn, you pull one of the cards from the *Doge Deck*. Stats are updated after each dice roll. The game uses a fun combination of "doge-speak" and topical meme-references throughout the user's experience. Full descriptions of the six different cards can be found on the landing page for the game!
+**Dogecoin the Game** is a web-based browser board game, created for my Unit 1 capstone project in General Assembly's Software Engineering Immersive bootcamp. The game has 20 spaces, a 4-sided dice, and an 84-card *"Doge Deck"* with six distinct card types. To win, you must reach your profit goal, have a non-zero bank account, and have at least one remaining life by the time you get back to square 1. On each turn, you pull one of the cards from the *Doge Deck*. Stats are updated after each dice roll. The game uses a fun combination of "doge-speak" and topical meme-references throughout the user's experience. Full descriptions of the six different cards can be found on the landing page for the game!
 
 ***
 
@@ -39,11 +39,11 @@
 ***
 
 ## Game Design
-#### Rather than creating a new version of an existing game, I chose to create an entirely new game. I knew I wanted **Dogecoin the Game** to be a crossbreed of the board games *Monopoly* and *Life*, but choosing the right combination of profit goals and initial investments meant that I had to engineer the game with the right probabilities to produce a win for six different scenarios. In order to determine these probabilities, I created a spreadsheet to get the trend lines for each case, and designed my game cards around these numbers.
+Rather than creating a new version of an existing game, I chose to create an entirely new game. I knew I wanted **Dogecoin the Game** to be a crossbreed of the board games *Monopoly* and *Life*, but choosing the right combination of profit goals and initial investments meant that I had to engineer the game with the right probabilities to produce a win for six different scenarios. In order to determine these probabilities, I created a spreadsheet to get the trend lines for each case, and designed my game cards around these numbers.  
 
-#### Much of my focus was diverted to the back-end of the game design, as there was a lot of logic behind the scenes. In order to keep my codebase neat and readable, the main.js file is extensively and meticulously commented with descriptions for nearly every code block. My hope for this detailed commenting is that my code might be used by others who are just starting their journey into learning Javascript, and can fork and clone this project to use as practice. I also hope to set a standard for how code should be commented, as I see massive growth opportunity in this area (so much code I find has little to no comments, and terrible variable names, so it's difficult to figure out how it works). Wherever possible, I tried to follow good semantic code practices.
+Much of my focus was diverted to the back-end of the game design, as there was a lot of logic behind the scenes. In order to keep my codebase neat and readable, the main.js file is extensively and meticulously commented with descriptions for nearly every code block. My hope for this detailed commenting is that my code might be used by others who are just starting their journey into learning Javascript, and can fork and clone this project to use as practice. I also hope to set a standard for how code should be commented, as I see massive growth opportunity in this area (so much code I find has little to no comments, and terrible variable names, so it's difficult to figure out how it works). Wherever possible, I tried to follow good semantic code practices.  
 
-#### The front-end of this game is warmly minimalistic, with a color scheme complementary to the dogecoin palette. Future design edits will include more memes and animations.
+The front-end of this game is warmly minimalistic, with a color scheme complementary to the dogecoin palette. Future design edits will include more memes and animations.
 
 ***
 

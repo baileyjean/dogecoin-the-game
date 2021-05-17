@@ -88,6 +88,16 @@ h3 {
   cursor: pointer;
   font-size: 24px;
   border-radius: 7px;
+  background: #ffd3b6;
+  color: rgb(59, 52, 52);
+}
+
+.drawMe:hover {
+  cursor: pointer;
+  font-size: 24px;
+  border-radius: 7px;
+  background: rgb(59, 52, 52);
+  color: #ffd3b6;
 }
 
 .game-messages {
@@ -124,6 +134,9 @@ form {
 .playNow {
   border-radius: 36%;
   cursor: copy;
+  font-size: 24px;
+  background: #affcd2;
+  color: rgb(65, 99, 99);
 }
 
 .invest {
@@ -148,4 +161,7 @@ form {
   cursor: pointer;
   font-size: 24px;
   border-radius: 7px;
+  background: #ffd3b6;
+  color: rgb(59, 52, 52);
 }
+

@@ -192,6 +192,9 @@ function createPlayer() {
   newPlayer.bankBalance = bankBalance - playerInvests;
   newPlayer.dogesHeld = playerInvests/dogeStartingPrice; 
   newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld;
+  drawCard.style.opacity = 0;
+  document.querySelector(`.profit`).style.visibility = "hidden";
+  document.querySelector(`.invest`).style.visibility = "hidden";
   console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal} || NumLives: ${newPlayer.numLives}`)
 }
 
@@ -238,7 +241,7 @@ shuffle(Deck);
 // checkWin - First attempt at making a function to check for a win
 function winOrLose() {
   let printToContainer = document.querySelector(`.winOrLoseMessage`);
-  if((newPlayer.myGoal = newPlayer.earningTotal) && (newPlayer.numLives != 0) && (newPlayer.bankBalance >= 0)){
+  if((newPlayer.myGoal <= newPlayer.earningTotal) && (newPlayer.numLives != 0) && (newPlayer.bankBalance >= 0)){
     window.alert(`omg wow you win!`);
     printToContainer.innerHTML = `<img src="./css/images/successDogeSmol.png"/>`;
   } else{
@@ -272,6 +275,8 @@ drawCard.addEventListener(`click`, function () {
   let cardText = document.createTextNode(`You pulled a ${cardIndex.displayName}`);
   newCardP.appendChild(cardText);
   gameMessage.prepend(newCardP);
+  drawCard.style.opacity = 0;
+  diceOnBoard.style.opacity = 100;
   // --- matches the "type" of each card and calls its function when the card is found
   switch(cardIndex.type){
     case `goodTweet`: 
@@ -312,6 +317,8 @@ diceOnBoard.addEventListener(`click`, function () {
   gameMessage.prepend(newRollP);
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
+  diceOnBoard.style.opacity = 0;
+  drawCard.style.opacity = 100;
   
   console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal} || NumLives: ${newPlayer.numLives}`)
   //gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;

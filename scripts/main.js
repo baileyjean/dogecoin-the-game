@@ -23,7 +23,7 @@ let gameActive = false;                                     // initialized to fa
 let earningTotal = 0;                                       // initialized to 0; used to calculate how much player's investment is worth
 let boardPositions = [];                                    // set by fillBoard() function
 let boardSpace = document.querySelectorAll(`.playable`);    // used in fillBoard()
-// All possible card types used in the game
+// All possible card types used in the game along with their associated functions
 const possibleChoices = [{                                                                    
   type: `memeLord`,
   displayName:'Meme Lord',
@@ -56,7 +56,7 @@ const possibleChoices = [{
   yayTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice + (Math.floor(Math.random() * 20));
     newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld - newPlayer.myInvestment;
-    //gameMessage.innerHTML = `Player pulled Good Tweet`;
+    document.querySelector(`.tweets`).innerHTML = `<img src="./css/images/elonTweet-good-10.png" width="300vw" height="261vh" />`;
   }
 },{
   type: `lifeHappens`,
@@ -67,22 +67,22 @@ const possibleChoices = [{
       switch(shitHappens[Math.floor(Math.random() * shitHappens.length)]){
         case(`car`):{
           newPlayer.bankBalance -= 500
-          //gameMessage.innerHTML = `Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, you have this broken ass car that needs fixing. -$500`;
+          window.alert(`LIFE HAPPENS: Once you have enough money you can afford a Tesla (which I hear will be accepting Doge as payment soon)... until then, your broken ass car cost you $500`);
           break;
         }
         case(`debt collectors`):{
           newPlayer.bankBalance -= 100
-          //gameMessage.innerHTML = `Hopefully you can be better with your money when you're a Meme Millionaire... -$100.`;
+          window.alert(`LIFE HAPPENS: Hopefully you can be better with your money when you're a Meme Millionaire. Debt collectors just cost you $100.`);
           break;
         }
         case(`drinking problems`):{
           newPlayer.bankBalance -= 300
-          //gameMessage.innerHTML = `You need new coping mechanisms... that night of drinking cost you $300.`;
+          window.alert(`LIFE HAPPENS: You need new coping mechanisms... that night of drinking cost you $300.`);
           break;
         }
         case(`your niece`):{
           newPlayer.dogesHeld -= (newPlayer.dogesHeld * .5)
-          //gameMessage.innerHTML = `Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`;
+          window.alert(`LIFE HAPPENS: Your niece Cecilia Jo is your favorite person... so of course you gave her half of your doges.`);
           break;
         }
     }
@@ -93,8 +93,6 @@ const possibleChoices = [{
   mineDoges: function() {
     newPlayer.dogesHeld += newPlayer.dogesHeld * (Math.floor(Math.random() * 5));
     newPlayer.earningTotal = (dogeCurrentPrice * newPlayer.dogesHeld) - newPlayer.myInvestment;
-    //let dogeMinerText = `Player pulled dogeMiner`;
-    //gameMessage.appendChild(dogeMinerText);
   }
 },{
   type: `badTweet`,
@@ -102,7 +100,7 @@ const possibleChoices = [{
   sadTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice * 0.2;
     newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld - newPlayer.myInvestment;
-    //gameMessage.innerHTML = `Player pulled Bad Tweet`;
+    document.querySelector(`.tweets`).innerHTML = `<img src="./css/images/elonTweet-bad-01.png" width="300vw" height="97vh" />`;
   }
 }]
 
@@ -186,17 +184,25 @@ function initializeInvestment(event) {
 // createPlayer() - called by the playNow event handler
 // TODO: error handling if player tries to start game without making profit/investment selections
 function createPlayer() {
+  // --- create a new player object and pass in the profitGoal and playerInvests into the Player class
   newPlayer = new Player(profitGoal, playerInvests);
+  // --- draw the player image in the new player's location
   newPlayer.location.innerHTML = `${playerOne}`;
+  // --- light up the element where the player is located
   newPlayer.location.style.opacity = 100;
+  // --- turn the game "on"
   gameActive = true;
+  // -- do maths and set the new player's attributes accordingly
   newPlayer.bankBalance = bankBalance - playerInvests;
   newPlayer.dogesHeld = playerInvests/dogeStartingPrice; 
   newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld;
+  // --- hide the draw card button so player rolls a dice to move first
   drawCard.style.opacity = 0;
-  document.querySelector(`.profit`).style.visibility = "hidden";
-  document.querySelector(`.invest`).style.visibility = "hidden";
-  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal} || NumLives: ${newPlayer.numLives}`)
+  // --- hide the start button
+  document.querySelector(`.stort`).style.opacity = 0;
+  // --- display player's profit goal and initial investment on center board
+  document.querySelector(`.profit`).innerHTML = `Your profit goal is set to: $${newPlayer.myGoal}`;
+  document.querySelector(`.invest`).innerHTML = `Your initial investment was: $${newPlayer.myInvestment}`;
 }
 
 // findCard(cardType) - used in creating the six types of card decks below; to avoid scoping issues deck arrays are declared below this function
@@ -290,7 +296,7 @@ drawCard.addEventListener(`click`, function () {
   diceOnBoard.style.opacity = 100;
   // --- matches the "type" of each card and calls its function when the card is found
   switch(cardIndex.type){
-    case `goodTweet`: 
+    case `goodTweet`:
       return cardIndex.yayTweets();
     case `badTweet`:
       return cardIndex.sadTweets();

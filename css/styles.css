@@ -40,6 +40,20 @@ h3 {
   justify-content: space-evenly;
 }
 
+.winOrLoseMessage {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 2;
+}
+
+.tweets {
+  display: flex;
+  flex-direction: column;
+  grid-column: 3;
+  grid-row: 1;
+}
+
 .UI-container {
   display: grid;
   align-items: center;
@@ -51,12 +65,6 @@ h3 {
   position: absolute;
 }
 
-.winOrLoseMessage {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  z-index: 1;
-}
 
 .profit {
   grid-column: 1;
@@ -78,6 +86,8 @@ h3 {
 
 .drawMe {
   cursor: pointer;
+  font-size: 24px;
+  border-radius: 7px;
 }
 
 .game-messages {
@@ -136,4 +146,6 @@ form {
 
 .rollMe{
   cursor: pointer;
+  font-size: 24px;
+  border-radius: 7px;
 }

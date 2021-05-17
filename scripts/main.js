@@ -7,7 +7,7 @@ const setInvestment = document.querySelectorAll(`.initial-invest`);             
 const playNow = document.querySelector(`.playNow`);                                           // used in event handler to call createPlayer()
 const goalDisplay = document.getElementById(`goalSetTo`);                                     // used in setProfitGoal() to display desired goal
 const investmentDisplay = document.getElementById(`playerInvests`);                           // used in initializeInvestment() to display desired investment
-const drawCard = document.querySelector(`.drawMe`);                                        // used in event handler for card deck and calls Player.pullsCard() method 
+const drawCard = document.querySelector(`.drawMe`);                                           // used in event handler for card deck and calls Player.pullsCard() method 
 const diceOnBoard = document.querySelector(`.rollMe`);                                        // used in event handler for rolling the dice; determines how many places the player moves on the board
 const gameMessage = document.querySelector(`.game-messages`);                                 // used in possibleChoices functions to write messages to the screen
 const diceSet = [1,2,3,4];                                                                    // used in Player.rollDice method
@@ -188,6 +188,7 @@ function initializeInvestment(event) {
 function createPlayer() {
   newPlayer = new Player(profitGoal, playerInvests);
   newPlayer.location.innerHTML = `${playerOne}`;
+  newPlayer.location.style.opacity = 100;
   gameActive = true;
   newPlayer.bankBalance = bankBalance - playerInvests;
   newPlayer.dogesHeld = playerInvests/dogeStartingPrice; 
@@ -317,6 +318,7 @@ diceOnBoard.addEventListener(`click`, function () {
   gameMessage.prepend(newRollP);
   newPlayer.location = targetElement;
   targetElement.innerHTML = playerOne;
+  newPlayer.location.style.opacity = 100;
   diceOnBoard.style.opacity = 0;
   drawCard.style.opacity = 100;
   

@@ -271,11 +271,19 @@ drawCard.addEventListener(`click`, function () {
   let cardIndex = Deck.shift();
   // --- pushes that card onto the player's hand
   newPlayer.pullsCard(cardIndex);
-  // --- update game message board with status
+  // --- create new <p> element and next text node with card info
   let newCardP = document.createElement("P");
   let cardText = document.createTextNode(`You pulled a ${cardIndex.displayName}`);
+  // --- append the text node to the paragraph just created
   newCardP.appendChild(cardText);
+  // --- prepend the new paragraph to the gameMessage board so it shows at the top
   gameMessage.prepend(newCardP);
+  // --- do the same thing again, but update with ALL of Player's Stats
+  let playerStatP = document.createElement("P");
+  let playersStats = document.createTextNode(`You've earned $${newPlayer.earningTotal} so far. You have $${newPlayer.bankBalance} in your bank. You have ${newPlayer.dogesHeld} dogecoins in your wallet. You have ${newPlayer.numLives} lives left.`);
+  playerStatP.appendChild(playersStats);
+  gameMessage.prepend(playerStatP);
+  // --- change opacity of game play buttons depending on which move player is supposed to make
   drawCard.style.opacity = 0;
   diceOnBoard.style.opacity = 100;
   // --- matches the "type" of each card and calls its function when the card is found
@@ -312,17 +320,20 @@ diceOnBoard.addEventListener(`click`, function () {
     winOrLose();
     return;
   }
+  // --- create new <p> element and next text node with roll info
   let newRollP = document.createElement("P");
   let rollText = document.createTextNode(`You rolled a ${move}`);
+  // --- append the text node to the paragraph just created
   newRollP.appendChild(rollText);
+  // --- prepend the new paragraph to the gameMessage board so it shows at the top
   gameMessage.prepend(newRollP);
+  // --- set player's location to the new playable square based on math above
   newPlayer.location = targetElement;
+  // --- draw the player image in the new square
   targetElement.innerHTML = playerOne;
+  // --- light up the current location of player
   newPlayer.location.style.opacity = 100;
+  // --- change opacity of game play buttons depending on which move player is supposed to make
   diceOnBoard.style.opacity = 0;
   drawCard.style.opacity = 100;
-  
-  console.log(`New Player has these attributes--> GOAL: ${newPlayer.myGoal} || INVESTMENT: ${newPlayer.myInvestment} || BANK BALANCE: ${newPlayer.bankBalance} || DOGES HELD: ${newPlayer.dogesHeld} || EARNING TOTAL: ${newPlayer.earningTotal} || NumLives: ${newPlayer.numLives}`)
-  //gameMessage.innerHTML = `PLAYER'S PROGRESS REPORT: Bank Account - $${newPlayer.getBalance()} --- Total Earnings - $${earningTotal} --- Doges Held - ${dogesHeld} doges`;
-  //gameMessage.innerHTML = `GAME PROGRESS REPORT: Current Price of Doge - $${dogeCurrentPrice}`
 })

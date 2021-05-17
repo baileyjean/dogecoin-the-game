@@ -100,7 +100,7 @@ const possibleChoices = [{
   sadTweets: function() {
     dogeCurrentPrice = dogeCurrentPrice * 0.2;
     newPlayer.earningTotal = dogeCurrentPrice * newPlayer.dogesHeld - newPlayer.myInvestment;
-    document.querySelector(`.tweets`).innerHTML = `<img src="./css/images/elonTweet-bad-01.png" width="300vw" height="97vh" />`;
+    document.querySelector(`.tweets`).innerHTML = `<img src="./css/images/elonTweet-bad-01.png" width="400vw" height="129vh" />`;
   }
 }]
 
@@ -313,6 +313,9 @@ drawCard.addEventListener(`click`, function () {
 
 // Event Handler for moving the player around the board - calls the roll() method of the Player object and sets player.location
 diceOnBoard.addEventListener(`click`, function () {
+  // --- Clear any Tweets from the board if they exist
+  document.querySelector(`.tweets`).innerHTML = ``
+  // --- create a local variable to store player's roll number for this turn
   let move = newPlayer.roll();
   // --- Take dice roll, target boardPositions by roll number, update player location to target element
   let currentIndex = boardPositions.indexOf(newPlayer.location);

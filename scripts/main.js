@@ -280,7 +280,9 @@ drawCard.addEventListener(`click`, function () {
   gameMessage.prepend(newCardP);
   // --- do the same thing again, but update with ALL of Player's Stats
   let playerStatP = document.createElement("P");
-  let playersStats = document.createTextNode(`You've earned $${newPlayer.earningTotal} so far. You have $${newPlayer.bankBalance} in your bank. You have ${newPlayer.dogesHeld} dogecoins in your wallet. You have ${newPlayer.numLives} lives left.`);
+  // --- calculate the percentage of player's profit goal they've earned so far
+  let percentageOfGoal = ((newPlayer.earningTotal)/(newPlayer.myGoal)) * 100;
+  let playersStats = document.createTextNode(`You've earned $${percentageOfGoal.toFixed(2)}% of your goal so far. You have $${newPlayer.bankBalance.toFixed(2)} in your bank. You have ${newPlayer.dogesHeld.toFixed(0)} dogecoins in your wallet. You have ${newPlayer.numLives} lives left.`);
   playerStatP.appendChild(playersStats);
   gameMessage.prepend(playerStatP);
   // --- change opacity of game play buttons depending on which move player is supposed to make
